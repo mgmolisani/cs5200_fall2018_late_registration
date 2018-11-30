@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const GameModel = require('../models/Game');
 
 const createGame = game => {
@@ -15,6 +14,10 @@ const deleteGame = id => {
 
 const findAllGames = () => {
     return GameModel.find().exec();
+};
+
+const findAllGamesByType = gameType => {
+    return GameModel.find({gameType}).exec();
 };
 
 const findGameById = id => {
@@ -81,10 +84,10 @@ module.exports = {
     updateGame,
     deleteGame,
     findAllGames,
+    findAllGamesByType,
     findGameById,
     addTeamToGame,
     removeTeamFromGame,
     updateTeamScore,
     endGame
-    //TODO: Add the remaining methods
 };
