@@ -8,6 +8,7 @@ module.exports = new Schema({
     gameType: String,
     teams: [
         {
+            _id: false,
             team: {
                 type: Schema.Types.ObjectId,
                 ref: TeamModel

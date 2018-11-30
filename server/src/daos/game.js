@@ -32,8 +32,10 @@ const addTeamToGame = (gameId, teamId) => {
             return GameModel.findByIdAndUpdate(
                 gameId,
                 {
-                    $push: {
-                        team: mongoose.Types.ObjectId(teamId)
+                    $addToSet: {
+                        teams: {
+                            team: teamId
+                        }
                     }
                 });
         });
