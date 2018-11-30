@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const GameModel = require('../models/Game');
-const TeamModel = require('../models/Team');
 
 const createGame = game => {
     return GameModel.create(game);
@@ -23,39 +22,46 @@ const findGameById = id => {
 };
 
 const addTeamToGame = (gameId, teamId) => {
-    return Promise.all([
-        GameModel.findById(gameId).exec(),
-        TeamModel.findById(teamId).exec()
-    ])
-        .then(([game, team]) => {
-            return GameModel.findByIdAndUpdate(
-                gameId,
-                {
-                    $addToSet: {
-                        teams: {
-                            team: teamId
-                        }
-                    }
-                });
-        });
+    return GameModel.findByIdAndUpdate(
+        gameId,
+        {
+            $addToSet: {
+                teams: {
+                    team: teamId
+                }
+            }
+        },
+        {new: true}
+    );
 };
 
 const removeTeamFromGame = (gameId, teamId) => {
-    return Promise.all([
-        GameModel.findById(gameId).exec(),
-        TeamModel.findById(teamId).exec()
-    ])
-        .then(([game, team]) => {
-            return GameModel.findByIdAndUpdate(
-                gameId,
-                {
-                    $pull: {
-                        teams: {
-                            team: teamId
-                        }
-                    }
-                });
-        });
+    return GameModel.findByIdAndUpdate(
+        gameId,
+        {
+            $pull: {
+                teams: {
+                    team: teamId
+                }
+            }
+        },
+        {new: true}
+    );
+};
+
+const updateTeamScore = (gameId, teamId, score) => {
+    return GameModel.findOneAndUpdate(
+        {
+            _id: gameId,
+            'teams.team': teamId
+        },
+        {
+            $set: {
+                'teams.$.score': score
+            }
+        },
+        {new: true}
+    );
 };
 
 module.exports = {
@@ -66,5 +72,6 @@ module.exports = {
     findGameById,
     addTeamToGame,
     removeTeamFromGame,
+    updateTeamScore,
     //TODO: Add the remaining methods
 };

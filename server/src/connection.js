@@ -13,8 +13,8 @@ require('./models/Team').create({
     name: 'Warriors'
 });
 
-require('./daos/game').findGameById('5c00ae71416a651ce40b10b8').then((res) => console.log(res));
-require('./daos/game').removeTeamFromGame('5c00c79ff034dd40402afcf7', '5c00c5b50caaf149d876ed3b');
+require('./daos/game').addTeamToGame('5c016bfd953c6d488cec3b39', '5c016bfd953c6d488cec3b3a');
+require('./daos/game').updateTeamScore('5c016bfd953c6d488cec3b39', '5c016bfd953c6d488cec3b3a', 12);
 
 
 
