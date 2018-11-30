@@ -4,7 +4,7 @@
   "description": "Server for final project",
   "main": "server.js",
   "scripts": {
-    "test": "test"
+    "test": "node src/connection.js"
   },
   "author": "",
   "license": "ISC",

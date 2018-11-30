@@ -12,7 +12,10 @@ module.exports = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: TeamModel
             },
-            score: Number
+            score: {
+                type: Number,
+                default: 0
+            }
         }
     ],
     manager: {
