@@ -32,7 +32,7 @@ const addTeamToGame = (gameId, teamId) => {
             }
         },
         {new: true}
-    );
+    ).exec();
 };
 
 const removeTeamFromGame = (gameId, teamId) => {
@@ -46,7 +46,7 @@ const removeTeamFromGame = (gameId, teamId) => {
             }
         },
         {new: true}
-    );
+    ).exec();
 };
 
 const updateTeamScore = (gameId, teamId, score) => {
@@ -61,7 +61,19 @@ const updateTeamScore = (gameId, teamId, score) => {
             }
         },
         {new: true}
-    );
+    ).exec();
+};
+
+const endGame = gameId => {
+    return GameModel.findByIdAndUpdate(
+        gameId,
+        {
+            $set: {
+                isOver: true
+            }
+        },
+        {new: true}
+    ).exec();
 };
 
 module.exports = {
@@ -73,5 +85,6 @@ module.exports = {
     addTeamToGame,
     removeTeamFromGame,
     updateTeamScore,
+    endGame
     //TODO: Add the remaining methods
 };

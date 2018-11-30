@@ -23,5 +23,8 @@ module.exports = new Schema({
         type: Schema.Types.ObjectId,
         ref: UserModel
     },
-    isOver: Boolean
+    isOver: {
+        type: Boolean,
+        default: false
+    }
 }, {collection: 'game'});
