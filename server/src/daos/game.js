@@ -28,7 +28,6 @@ const addTeamToGame = (gameId, teamId) => {
         TeamModel.findById(teamId).exec()
     ])
         .then(([game, team]) => {
-            console.log(game.gameType + ' ' + team.name);
             return GameModel.findByIdAndUpdate(
                 gameId,
                 {
@@ -41,23 +40,23 @@ const addTeamToGame = (gameId, teamId) => {
         });
 };
 
-// const removeTeamFromGame = (gameId, teamId) => {
-//     return Promise.all([
-//         GameModel.findById(gameId).exec(),
-//         TeamModel.findById(teamId).exec()
-//     ])
-//         .then(([game, team]) => {
-//             console.log(game.gameType + ' ' + team.name);
-//             return GameModel.Update(
-//                 {_id: gameId,
-//                 $in}
-//                 , {
-//                     $pull: {
-//                         team: teamId
-//                     }
-//                 });
-//         });
-// };
+const removeTeamFromGame = (gameId, teamId) => {
+    return Promise.all([
+        GameModel.findById(gameId).exec(),
+        TeamModel.findById(teamId).exec()
+    ])
+        .then(([game, team]) => {
+            return GameModel.findByIdAndUpdate(
+                gameId,
+                {
+                    $pull: {
+                        teams: {
+                            team: teamId
+                        }
+                    }
+                });
+        });
+};
 
 module.exports = {
     createGame,
@@ -66,6 +65,6 @@ module.exports = {
     findAllGames,
     findGameById,
     addTeamToGame,
-    //removeTeamFromGame,
+    removeTeamFromGame,
     //TODO: Add the remaining methods
 };
