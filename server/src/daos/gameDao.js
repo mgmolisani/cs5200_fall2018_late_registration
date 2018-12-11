@@ -1,31 +1,31 @@
-const GameModel = require('../models/Game');
+const gameModel = require('../models/Game');
 
 const createGame = game => {
-    return GameModel.create(game);
+    return gameModel.create(game);
 };
 
 const updateGame = (id, game) => {
-    return GameModel.findByIdAndUpdate(id, game).exec();
+    return gameModel.findByIdAndUpdate(id, game).exec();
 };
 
 const deleteGame = id => {
-    return GameModel.findByIdAndDelete(id).exec();
+    return gameModel.findByIdAndDelete(id).exec();
 };
 
 const findAllGames = () => {
-    return GameModel.find().exec();
+    return gameModel.find().exec();
 };
 
 const findAllGamesByType = gameType => {
-    return GameModel.find({gameType}).exec();
+    return gameModel.find({gameType}).exec();
 };
 
 const findGameById = id => {
-    return GameModel.findById(id).exec();
+    return gameModel.findById(id).exec();
 };
 
 const addTeamToGame = (gameId, teamId) => {
-    return GameModel.findByIdAndUpdate(
+    return gameModel.findByIdAndUpdate(
         gameId,
         {
             $addToSet: {
@@ -39,7 +39,7 @@ const addTeamToGame = (gameId, teamId) => {
 };
 
 const removeTeamFromGame = (gameId, teamId) => {
-    return GameModel.findByIdAndUpdate(
+    return gameModel.findByIdAndUpdate(
         gameId,
         {
             $pull: {
@@ -53,7 +53,7 @@ const removeTeamFromGame = (gameId, teamId) => {
 };
 
 const updateTeamScore = (gameId, teamId, score) => {
-    return GameModel.findOneAndUpdate(
+    return gameModel.findOneAndUpdate(
         {
             _id: gameId,
             'teams.team': teamId
@@ -68,7 +68,7 @@ const updateTeamScore = (gameId, teamId, score) => {
 };
 
 const endGame = gameId => {
-    return GameModel.findByIdAndUpdate(
+    return gameModel.findByIdAndUpdate(
         gameId,
         {
             $set: {

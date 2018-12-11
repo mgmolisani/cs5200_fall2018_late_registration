@@ -1,24 +1,24 @@
-const PostModel = require('../models/Post');
+const postModel = require('../models/Post');
 
 const createPost = post => {
-    return PostModel.create(post);
+    return postModel.create(post);
 };
 
 const updatePost = (id, post) => {
-    return PostModel.findByIdAndUpdate(id, post).exec();
+    return postModel.findByIdAndUpdate(id, post).exec();
 };
 
 const deletePost = id => {
-    return PostModel.findByIdAndDelete(id).exec();
+    return postModel.findByIdAndDelete(id).exec();
 };
 
 const findAllPosts = () => {
-    return PostModel.find().exec();
+    return postModel.find().exec();
 };
 
 
 const findPostById = id => {
-    return PostModel.findById(id).exec();
+    return postModel.findById(id).exec();
 };
 
 

@@ -10,12 +10,12 @@ router.get('/getAllGames', function (req, res, next) {
     return gameDao.findAllGames()
         .then( result => {
             res.send(result);
+            return result;
         })
         .catch(next);
 });
 
 router.get('/getGameById/:id', function(req,res,next){
-    // res.send('Welcome to the game router.')
     return gameDao.findGameById(req.params.id)
         .then( result => {
             res.send(result);
