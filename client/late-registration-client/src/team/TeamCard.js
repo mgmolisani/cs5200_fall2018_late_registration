@@ -71,7 +71,7 @@ export default class TeamCard
                         <div className='col-md-6 col-lg-4 mb-4'>
                             <div className='card'>
                                 <img className='card-img-top'
-                                     src={logo}
+                                     src={logo || 'http://pakarya.com/website/views/layouts/static/images/placeholder-logo.png'}
                                      alt={name}
                                      style={{
                                          height: '15em',
@@ -142,6 +142,16 @@ export default class TeamCard
                                                     <p className='mb-0'>
                                                         {post.content}
                                                     </p>
+                                                    {
+                                                        (
+                                                            currentUser.userType === 'ADMIN'
+                                                            || currentUser._id === coach._id
+                                                            || currentUser._id === post.postedBy._id
+                                                        )
+                                                        && <button className='btn btn-danger btn-sm mx-auto my-3'>
+                                                            X
+                                                        </button>
+                                                    }
                                                 </li>)}
                                             </ul>
                                             : <h5>
@@ -185,7 +195,7 @@ export default class TeamCard
                                     {
                                         (
                                             currentUser.userType === 'ADMIN'
-                                            || currentUser._id === id
+                                            || currentUser._id === coach._id
                                         )
                                         && <Fragment>
                                             <button className='btn btn-secondary btn-block'

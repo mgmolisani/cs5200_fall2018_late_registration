@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import TeamSection from '../team/TeamSection';
-import SearchBar from '../shared/SearchBar';
+import Omnibar from '../shared/Omnibar';
+import UserContext from '../contexts/UserContext';
 
 export default class Team
     extends Component {
@@ -17,6 +18,7 @@ export default class Team
             search: ''
         };
         this.handleSearch = this.handleSearch.bind(this);
+        this.createNewTeam = this.createNewTeam.bind(this);
     }
 
     handleSearch(search) {
@@ -38,6 +40,7 @@ export default class Team
             mascot: 'Rogue',
             hometown: 'Boston, MA',
             coach: {
+                _id: 2,
                 firstName: 'Bobby',
                 lastName: 'Boy'
             },
@@ -81,6 +84,7 @@ export default class Team
                 mascot: 'Rogue',
                 hometown: 'Boston, MA',
                 coach: {
+                    _id: 2,
                     firstName: 'Bobby',
                     lastName: 'Boy'
                 },
@@ -99,11 +103,21 @@ export default class Team
         });
     }
 
+    createNewTeam() {
+        //TODO
+    }
+
     render() {
         return (
             <Fragment>
-                <SearchBar value={this.state.search}
-                           onChange={event => this.handleSearch(event.target.value)}/>
+                <UserContext.Consumer>
+                    {({currentUser}) => <Omnibar value={this.state.search}
+                                                 onChange={event => this.handleSearch(event.target.value)}
+                                                 showButton={currentUser.userType === 'COACH'}
+                                                 onClick={this.createNewTeam}
+                                                 buttonLabel={'Create New Team'}/>
+                    }
+                </UserContext.Consumer>
                 <TeamSection title={'My Teams'}
                              teams={this.filterTeams(this.state.myTeams)}/>
                 <TeamSection title={'All Teams'}
