@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import UserSection from '../user/UserSection';
+import SearchBar from '../shared/SearchBar';
 
 export default class User
     extends Component {
@@ -15,9 +16,22 @@ export default class User
             coaches: [],
             managers: [],
             administrators: [],
-            allUsers: []
+            allUsers: [],
+            search: ''
         };
+        this.handleSearch = this.handleSearch.bind(this);
     }
+
+    handleSearch(search) {
+        this.setState({search});
+    }
+
+    filterUsers(users) {
+        const search = this.state.search.toLowerCase();
+        return users.filter(user => user.username.toLowerCase().includes(search)
+            || user.firstName.toLowerCase().includes(search)
+            || user.lastName.toLowerCase().includes(search));
+    };
 
     componentDidMount() {
         const players = [
@@ -47,7 +61,7 @@ export default class User
                 firstName: 'Mike',
                 lastName: 'Molisani',
                 userType: 'COACH',
-                ratings: [1,2,3,4,5,5,5,5,5,5,4,5,4,3,2,3,4,5],
+                ratings: [1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 4, 5, 4, 3, 2, 3, 4, 5],
                 yearsExperience: 20,
                 teams: []
             }
@@ -84,16 +98,18 @@ export default class User
     render() {
         return (
             <Fragment>
+                <SearchBar value={this.state.search}
+                           onChange={event => this.handleSearch(event.target.value)}/>
                 <UserSection title={'Players'}
-                             users={this.state.players}/>
+                             users={this.filterUsers(this.state.players)}/>
                 <UserSection title={'Coaches'}
-                             users={this.state.coaches}/>
+                             users={this.filterUsers(this.state.coaches)}/>
                 <UserSection title={'Managers'}
-                             users={this.state.managers}/>
+                             users={this.filterUsers(this.state.managers)}/>
                 <UserSection title={'Administrators'}
-                             users={this.state.administrators}/>
+                             users={this.filterUsers(this.state.administrators)}/>
                 <UserSection title={'All Users'}
-                             users={this.state.allUsers}/>
+                             users={this.filterUsers(this.state.allUsers)}/>
             </Fragment>
         );
     }

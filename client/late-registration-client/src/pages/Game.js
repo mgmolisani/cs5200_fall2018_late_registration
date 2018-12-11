@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import GameSection from '../game/GameSection';
+import SearchBar from '../shared/SearchBar';
 
 export default class Game
     extends Component {
@@ -12,8 +13,20 @@ export default class Game
         super(props);
         this.state = {
             myGames: [],
-            allGames: []
-        }
+            allGames: [],
+            search: ''
+        };
+        this.handleSearch = this.handleSearch.bind(this);
+    }
+
+    handleSearch(search) {
+        this.setState({search});
+    }
+
+    filterGames(games) {
+        const search = this.state.search.toLowerCase();
+        return games.filter(game => game.gameType.toLowerCase().includes(search)
+            || game.location.toLowerCase().includes(search));
     }
 
     componentDidMount() {
@@ -81,10 +94,12 @@ export default class Game
     render() {
         return (
             <Fragment>
+                <SearchBar value={this.state.seach}
+                           onChange={event => this.handleSearch(event.target.value)}/>
                 <GameSection title={'My Games'}
-                             games={this.state.myGames}/>
+                             games={this.filterGames(this.state.myGames)}/>
                 <GameSection title={'All Games'}
-                             games={this.state.allGames}/>
+                             games={this.filterGames(this.state.allGames)}/>
             </Fragment>
         );
     }

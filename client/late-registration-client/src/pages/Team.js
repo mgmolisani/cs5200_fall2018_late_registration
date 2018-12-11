@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import TeamSection from '../team/TeamSection';
+import SearchBar from '../shared/SearchBar';
 
 export default class Team
     extends Component {
@@ -12,8 +13,21 @@ export default class Team
         super(props);
         this.state = {
             myTeams: [],
-            allTeams: []
-        }
+            allTeams: [],
+            search: ''
+        };
+        this.handleSearch = this.handleSearch.bind(this);
+    }
+
+    handleSearch(search) {
+        this.setState({search});
+    }
+
+    filterTeams(teams) {
+        const search = this.state.search.toLowerCase();
+        return teams.filter(team => team.name.toLowerCase().includes(search)
+            || team.mascot.toLowerCase().includes(search)
+            || team.hometown.toLowerCase().includes(search));
     }
 
     componentDidMount() {
@@ -82,16 +96,18 @@ export default class Team
         this.setState({
             myTeams: teams,
             allTeams: teams
-        })
+        });
     }
 
     render() {
         return (
             <Fragment>
+                <SearchBar value={this.state.search}
+                           onChange={event => this.handleSearch(event.target.value)}/>
                 <TeamSection title={'My Teams'}
-                             teams={this.state.myTeams}/>
+                             teams={this.filterTeams(this.state.myTeams)}/>
                 <TeamSection title={'All Teams'}
-                             teams={this.state.allTeams}/>
+                             teams={this.filterTeams(this.state.allTeams)}/>
             </Fragment>
         );
     }
