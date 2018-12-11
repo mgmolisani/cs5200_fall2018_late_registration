@@ -33,7 +33,7 @@ router.post('/createGame', function(req,res,next){
         .catch(next);
 });
 
-router.delete('/updateGame/:id', function(req,res,next){
+router.put('/updateGame/:id', function(req,res,next){
     let id = req.params.id;
     let game = req.body;
     return gameDao.updateGame(id, game)

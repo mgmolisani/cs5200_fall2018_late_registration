@@ -33,7 +33,7 @@ router.post('/createUser', function(req,res,next){
         .catch(next);
 });
 
-router.delete('/updateUser/:id', function(req,res,next){
+router.put('/updateUser/:id', function(req,res,next){
     let id = req.params.id;
     let user = req.body;
     return userDao.updateUser(id, user)

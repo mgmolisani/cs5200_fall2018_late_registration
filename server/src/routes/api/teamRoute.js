@@ -33,7 +33,7 @@ router.post('/createTeam', function(req,res,next){
         .catch(next);
 });
 
-router.delete('/updateTeam/:id', function(req,res,next){
+router.put('/updateTeam/:id', function(req,res,next){
     let id = req.params.id;
     let team = req.body;
     return teamDao.updateTeam(id, team)
