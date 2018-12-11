@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import UserSection from '../user/UserSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
+import {UserService} from '../services/UserService';
 
 export default class User
     extends Component {
@@ -18,7 +19,7 @@ export default class User
             coaches: [],
             managers: [],
             administrators: [],
-            allUsers: [],
+            users: [],
             search: ''
         };
         this.handleSearch = this.handleSearch.bind(this);
@@ -104,14 +105,15 @@ export default class User
             }
         ];
 
-        this.setState({
-            profile: profile,
-            players: players,
-            coaches: coaches,
-            managers: managers,
-            administrators: administrators,
-            allUsers: [...players, ...coaches, ...managers, ...administrators]
-        });
+        UserService.findAllUsers()
+            .then(users => this.setState({
+                profile: profile,
+                players: players,
+                coaches: coaches,
+                managers: managers,
+                administrators: administrators,
+                users: users
+            }));
     }
 
     render() {
@@ -136,7 +138,7 @@ export default class User
                 <UserSection title={'Administrators'}
                              users={this.filterUsers(this.state.administrators)}/>
                 <UserSection title={'All Users'}
-                             users={this.filterUsers(this.state.allUsers)}/>
+                             users={this.filterUsers(this.state.users)}/>
             </Fragment>
         );
     }
