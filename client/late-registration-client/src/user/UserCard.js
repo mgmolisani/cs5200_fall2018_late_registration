@@ -15,13 +15,15 @@ export default class UserCard
             username: '',
             firstName: '',
             lastName: '',
+            password: '',
+            userType: '',
             yearsExperience: '',
             hiredOn: '',
             editMode: false,
             showPlayerDetails: false
         };
         this.handleChange = this.handleChange.bind(this);
-        this.toggleEditMode = this.toggleEditMode.bind(this);
+        this.updateUser = this.updateUser.bind(this);
         this.endorsePlayer = this.endorsePlayer.bind(this);
         this.rateCoach = this.rateCoach.bind(this);
     }
@@ -30,7 +32,18 @@ export default class UserCard
         this.setState({[input]: value});
     }
 
-    toggleEditMode() {
+    updateUser() {
+        if (this.state.editMode) {
+            this.props.updateUser({
+                ...this.props.user,
+                username: this.state.username || this.props.username,
+                firstName: this.state.firstName || this.props.firstName,
+                lastName: this.state.lastName || this.props.lastName,
+                userType: this.state.userType || this.props.userType,
+                yearsExperience: this.state.yearsExperience || this.props.yearsExperience,
+                hiredOn: this.state.hiredOn || this.props.hiredOn
+            });
+        }
         this.setState(state => ({editMode: !state.editMode}));
     }
 
@@ -45,8 +58,7 @@ export default class UserCard
     }
 
     render() {
-        console.log(this.props);
-        const {id, username, firstName, lastName, userType, teams, endorsedBy, rating, yearsExperience, hiredOn} = this.props;
+        const {id, username, firstName, lastName, password, userType, teams, endorsedBy, rating, yearsExperience, hiredOn} = this.props;
         return (
             <UserContext.Consumer>
                 {({currentUser}) => {
@@ -72,6 +84,46 @@ export default class UserCard
                                                       defaultValue={lastName}
                                                       onChange={event => this.handleChange('lastName', event.target.value)}
                                                       isEditing={this.state.editMode}/>
+                                    {
+                                        (
+                                            currentUser.userType === 'ADMIN'
+                                            || currentUser._id === id
+                                        )
+                                        && <DynamicCardField id={id}
+                                                             label={'Password'}
+                                                             value={this.state.password}
+                                                             defaultValue={password}
+                                                             onChange={event => this.handleChange('password', event.target.value)}
+                                                             isEditing={this.state.editMode}/>
+                                    }
+                                    {currentUser.userType === 'ADMIN'
+                                    && <div className='form-group'>
+                                        <label htmlFor={id + '_User Type'}>
+                                            User Type
+                                        </label>
+                                        {
+                                            this.state.editMode
+                                                ? <select className='form-control'
+                                                          id={id + '_User Type'}
+                                                          onChange={event => this.handleChange('userType', event.target.value)}>
+                                                    <option value={'PLAYER'}>
+                                                        Player
+                                                    </option>
+                                                    <option value={'COACH'}>
+                                                        Coach
+                                                    </option>
+                                                    <option value={'MANAGER'}>
+                                                        Manager
+                                                    </option>
+                                                    <option value={'ADMIN'}>
+                                                        Administrator
+                                                    </option>
+                                                </select>
+                                                : <h5>
+                                                    {userType}
+                                                </h5>
+                                        }
+                                    </div>}
                                     {userType === 'COACH'
                                     && <DynamicCardField id={id}
                                                          label={'Years Experience'}
@@ -126,10 +178,11 @@ export default class UserCard
                                     )
                                     && <Fragment>
                                         <button className='btn btn-secondary btn-block'
-                                                onClick={this.toggleEditMode}>
+                                                onClick={this.updateUser}>
                                             {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
                                         </button>
-                                        <button className='btn btn-danger btn-block'>
+                                        <button className='btn btn-danger btn-block'
+                                                onClick={this.props.deleteUser}>
                                             Delete
                                         </button>
                                     </Fragment>}

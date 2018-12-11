@@ -24,13 +24,16 @@ export default class User
         };
         this.handleSearch = this.handleSearch.bind(this);
         this.createNewUser = this.createNewUser.bind(this);
+        this.updateUser = this.updateUser.bind(this);
+        this.deleteUser = this.deleteUser.bind(this);
+        this.refreshData = this.refreshData.bind(this);
     }
 
     handleSearch(search) {
         this.setState({search});
     }
 
-    filterUsers(users) {
+    searchUsers(users) {
         const search = this.state.search.toLowerCase();
         return users.filter(user => user.username.toLowerCase().includes(search)
             || user.firstName.toLowerCase().includes(search)
@@ -38,7 +41,32 @@ export default class User
     };
 
     createNewUser() {
-        //TODO
+        UserService.createUser({
+            username: 'newuser',
+            password: 'password',
+            firstName: 'first',
+            lastName: 'last',
+            userType: 'PLAYER'
+        }).then(() => this.refreshData());
+    }
+
+    updateUser(userId, user) {
+        UserService.updateUser(userId, user)
+            .then(() => this.refreshData());
+    }
+
+    deleteUser(userId) {
+        UserService.deleteUser(userId)
+            .then(() => this.refreshData());
+    }
+
+    refreshData() {
+        return UserService.findAllUsers()
+            .then(users => {
+                this.setState({
+                    users: users
+                });
+            });
     }
 
     componentDidMount() {
@@ -104,42 +132,52 @@ export default class User
                 userType: 'ADMIN'
             }
         ];
-
-        UserService.findAllUsers()
-            .then(users => this.setState({
-                profile: profile,
-                players: players,
-                coaches: coaches,
-                managers: managers,
-                administrators: administrators,
-                users: users
-            }));
+        this.setState({
+            profile: profile,
+            players: players,
+            coaches: coaches,
+            managers: managers,
+            administrators: administrators
+        });
+        this.refreshData();
     }
 
     render() {
+        const {users} = this.state;
         return (
-            <Fragment>
-                <UserContext.Consumer>
-                    {({currentUser}) => <Omnibar value={this.state.search}
-                                                 onChange={event => this.handleSearch(event.target.value)}
-                                                 showButton={currentUser.userType === 'ADMIN'}
-                                                 onClick={this.createNewUser}
-                                                 buttonLabel={'Create New User'}/>
-                    }
-                </UserContext.Consumer>
-                <UserSection title={'My Profile'}
-                             users={this.filterUsers(this.state.profile)}/>
-                <UserSection title={'Players'}
-                             users={this.filterUsers(this.state.players)}/>
-                <UserSection title={'Coaches'}
-                             users={this.filterUsers(this.state.coaches)}/>
-                <UserSection title={'Managers'}
-                             users={this.filterUsers(this.state.managers)}/>
-                <UserSection title={'Administrators'}
-                             users={this.filterUsers(this.state.administrators)}/>
-                <UserSection title={'All Users'}
-                             users={this.filterUsers(this.state.users)}/>
-            </Fragment>
+            <UserContext.Consumer>
+                {({currentUser}) => <Fragment>
+                    <Omnibar value={this.state.search}
+                             onChange={event => this.handleSearch(event.target.value)}
+                             showButton={currentUser.userType === 'ADMIN'}
+                             onClick={this.createNewUser}
+                             buttonLabel={'Create New User'}/>
+                    <UserSection title={'My Profile'}
+                                 users={this.searchUsers(users.filter(user => user._id === currentUser._id))}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}/>
+                    <UserSection title={'Players'}
+                                 users={this.searchUsers(users.filter(user => user.userType === 'PLAYER'))}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}/>
+                    <UserSection title={'Coaches'}
+                                 users={this.searchUsers(users.filter(user => user.userType === 'COACH'))}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}/>
+                    <UserSection title={'Managers'}
+                                 users={this.searchUsers(users.filter(user => user.userType === 'MANAGER'))}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}/>
+                    <UserSection title={'Administrators'}
+                                 users={this.searchUsers(users.filter(user => user.userType === 'ADMIN'))}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}/>
+                    <UserSection title={'All Users'}
+                                 users={this.searchUsers(this.state.users)}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}/>
+                </Fragment>}
+            </UserContext.Consumer>
         );
     }
 }
