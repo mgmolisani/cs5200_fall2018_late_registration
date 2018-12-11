@@ -37,6 +37,15 @@ export default class Home
                     }
                 ],
                 teams: []
+            },
+            {
+                _id: 5,
+                username: 'mm',
+                firstName: 'Mgm',
+                lastName: 'Molisani',
+                userType: 'PLAYER',
+                teams: [],
+                endorsedBy: []
             }
         ];
         const coaches = [

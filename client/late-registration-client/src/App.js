@@ -7,7 +7,6 @@ import Game from './pages/Game';
 import NotFound from './pages/NotFound';
 import UserContext from './contexts/UserContext';
 import Header from './shared/Header';
-import Admin from './pages/Admin';
 
 class App
     extends Component {
@@ -47,8 +46,6 @@ class App
                                        component={Team}/>
                                 <Route path={'/user'}
                                        component={User}/>
-                                <Route path={'/admin'}
-                                       component={Admin}/>
                                 <Route path={'*'}
                                        component={NotFound}/>
                             </Switch>

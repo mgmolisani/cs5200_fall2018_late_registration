@@ -33,6 +33,31 @@ export default class Team
                     firstName: 'Mike',
                     lastName: 'Molisani'
                 }
+            ],
+            posts: [
+                {
+                    _id: 1,
+                    content: 'Hello there',
+                    created: '2011-10-10',
+                    postedBy: {
+                        _id: 1,
+                        username: 'mmmm',
+                        firstName: 'Mike',
+                        lastName: 'Molisani'
+                    }
+                },
+                {
+                    _id: 2,
+                    content: 'Hello there Hello there Hello there Hello there Hello there Hello there Hello there' +
+                        ' Hello there Hello there Hello there',
+                    created: '2011-10-10',
+                    postedBy: {
+                        _id: 1,
+                        username: 'mmmm',
+                        firstName: 'Mike',
+                        lastName: 'Molisani'
+                    }
+                }
             ]
         },
             {
@@ -47,11 +72,12 @@ export default class Team
                 },
                 players: [
                     {
-                        _id: 1,
+                        _id: 5,
                         firstName: 'Mike',
                         lastName: 'Molisani'
                     }
-                ]
+                ],
+                posts: []
             }];
         this.setState({
             myTeams: teams,

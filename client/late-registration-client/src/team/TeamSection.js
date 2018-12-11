@@ -12,7 +12,8 @@ const TeamSection = props => {
                                                mascot={team.mascot}
                                                hometown={team.hometown}
                                                coach={team.coach}
-                                               players={team.players}/>
+                                               players={team.players}
+                                               posts={team.posts}/>
             )}
         </CardSection>
     );

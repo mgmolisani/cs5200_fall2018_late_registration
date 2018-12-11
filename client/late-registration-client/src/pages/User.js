@@ -27,16 +27,17 @@ export default class User
                 firstName: 'Mike',
                 lastName: 'Molisani',
                 userType: 'PLAYER',
-                endorsedBy: [
-                    {
-                        _id: 4,
-                        username: 'mm',
-                        firstName: 'Mgm',
-                        lastName: 'Molisani',
-                        userType: 'PLAYER'
-                    }
-                ],
+                endorsedBy: [4],
                 teams: []
+            },
+            {
+                _id: 5,
+                username: 'mm',
+                firstName: 'Mgm',
+                lastName: 'Molisani',
+                userType: 'PLAYER',
+                teams: [],
+                endorsedBy: []
             }
         ];
         const coaches = [

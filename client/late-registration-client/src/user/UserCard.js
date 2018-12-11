@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component, Fragment} from 'react';
 import UserContext from '../contexts/UserContext';
 import DynamicCardField from '../shared/DynamicCardField';
 
@@ -23,6 +22,8 @@ export default class UserCard
         };
         this.handleChange = this.handleChange.bind(this);
         this.toggleEditMode = this.toggleEditMode.bind(this);
+        this.endorsePlayer = this.endorsePlayer.bind(this);
+        this.rateCoach = this.rateCoach.bind(this);
     }
 
     handleChange(input, value) {
@@ -33,8 +34,18 @@ export default class UserCard
         this.setState(state => ({editMode: !state.editMode}));
     }
 
+    endorsePlayer(endorseeId, endorserId) {
+        //TODO
+        console.log(endorseeId + ' ' + endorserId);
+    }
+
+    rateCoach(coachId, rating) {
+        //TODO
+        console.log(coachId + ' ' + rating);
+    }
+
     render() {
-        const {id, username, firstName, lastName, userType, teams, endoresements, rating, yearsExperience, hiredOn } = this.props;
+        const {id, username, firstName, lastName, userType, teams, endorsements, rating, yearsExperience, hiredOn} = this.props;
         return (
             <UserContext.Consumer>
                 {({currentUser}) => {
@@ -60,55 +71,68 @@ export default class UserCard
                                                       defaultValue={lastName}
                                                       onChange={event => this.handleChange('lastName', event.target.value)}
                                                       isEditing={this.state.editMode}/>
-                                    {yearsExperience && <DynamicCardField id={id}
-                                                      label={'Years Experience'}
-                                                      value={this.state.yearsExperience}
-                                                      defaultValue={yearsExperience}
-                                                      onChange={event => this.handleChange('yearsExperience', event.target.value)}
-                                                      isEditing={this.state.editMode}/>}
-                                    {hiredOn && <DynamicCardField id={id}
-                                                      label={'Date of Hire'}
-                                                      value={this.state.hiredOn}
-                                                      defaultValue={hiredOn}
-                                                      onChange={event => this.handleChange('hiredOn', event.target.value)}
-                                                      isEditing={this.state.editMode}/>}
-                                    {rating && <DynamicCardField id={id}
-                                                      label={'Rating'}
-                                                      defaultValue={rating}/>}
-                                    {/*<div className='form-group mb-0'>*/}
-                                        {/*<label>*/}
-                                            {/*Players*/}
-                                        {/*</label>*/}
-                                        {/*{this.state.showPlayerDetails*/}
-                                            {/*? <ul className='list-group'>*/}
-                                                {/*{players.map(player => <li key={player._id}*/}
-                                                                           {/*className='list-group-item'>*/}
-                                                    {/*{player.firstName} {player.lastName}*/}
-                                                {/*</li>)}*/}
-                                            {/*</ul>*/}
-                                            {/*: <h5>*/}
-                                                {/*{players.length}*/}
-                                            {/*</h5>}*/}
-                                        {/*<button className='btn btn-secondary btn-block mt-3'*/}
-                                                {/*onClick={this.togglePlayerDetails}>*/}
-                                            {/*{this.state.showPlayerDetails ? 'Hide' : 'Show'} Player Details*/}
-                                        {/*</button>*/}
-                                    {/*</div>*/}
+                                    {userType === 'COACH'
+                                    && <DynamicCardField id={id}
+                                                         label={'Years Experience'}
+                                                         value={this.state.yearsExperience}
+                                                         defaultValue={yearsExperience}
+                                                         onChange={event => this.handleChange('yearsExperience', event.target.value)}
+                                                         isEditing={this.state.editMode}/>}
+                                    {userType === 'MANAGER'
+                                    && <DynamicCardField id={id}
+                                                         label={'Date of Hire'}
+                                                         value={this.state.hiredOn}
+                                                         defaultValue={hiredOn}
+                                                         onChange={event => this.handleChange('hiredOn', event.target.value)}
+                                                         isEditing={this.state.editMode}/>}
+                                    {userType === 'COACH'
+                                    && <DynamicCardField id={id}
+                                                         label={'Rating'}
+                                                         defaultValue={rating}/>}
                                 </div>
-                                {
-                                    currentUser.userType === 'ADMIN'
-                                    || currentUser._id === id
-                                        ? <div className='card-footer'>
-                                            <button className='btn btn-secondary btn-block'
-                                                    onClick={this.toggleEditMode}>
-                                                {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
-                                            </button>
-                                            <button className='btn btn-danger btn-block'>
-                                                Delete
-                                            </button>
+                                <div className='card-footer'>
+                                    {userType === 'COACH'
+                                    && currentUser.userType === 'PLAYER'
+                                    && <div className='form-group'>
+                                        <label>
+                                            Leave A Rating
+                                        </label>
+                                        <div className='btn-group w-100'>
+                                            {[1, 2, 3, 4, 5].map(rating => <button key={rating}
+                                                                                   className='btn btn-secondary w-100'
+                                                                                   onClick={() => this.rateCoach(id, rating)}>
+                                                {rating}
+                                            </button>)}
                                         </div>
-                                        : null
-                                }
+                                    </div>}
+                                    {userType === 'PLAYER'
+                                    && currentUser.userType === 'PLAYER'
+                                    && currentUser._id !== id
+                                    && <div className='form-group'>
+                                        <label>
+                                            Endorse This Player
+                                        </label>
+                                        <input className='form-control'
+                                               checked={endorsements.some(endorserId => {
+                                                   return endorserId === currentUser._id;
+                                               })}
+                                               type={'checkbox'}
+                                               onChange={() => this.endorsePlayer(id, currentUser._id)}/>
+                                    </div>}
+                                    {(
+                                        currentUser.userType === 'ADMIN'
+                                        && currentUser._id !== id
+                                    )
+                                    && <Fragment>
+                                        <button className='btn btn-secondary btn-block'
+                                                onClick={this.toggleEditMode}>
+                                            {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
+                                        </button>
+                                        <button className='btn btn-danger btn-block'>
+                                            Delete
+                                        </button>
+                                    </Fragment>}
+                                </div>
                             </div>
                         </div>
                     );
