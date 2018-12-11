@@ -45,7 +45,8 @@ export default class UserCard
     }
 
     render() {
-        const {id, username, firstName, lastName, userType, teams, endorsements, rating, yearsExperience, hiredOn} = this.props;
+        console.log(this.props);
+        const {id, username, firstName, lastName, userType, teams, endorsedBy, rating, yearsExperience, hiredOn} = this.props;
         return (
             <UserContext.Consumer>
                 {({currentUser}) => {
@@ -113,7 +114,7 @@ export default class UserCard
                                             Endorse This Player
                                         </label>
                                         <input className='form-control'
-                                               checked={endorsements.some(endorserId => {
+                                               checked={endorsedBy.some(endorserId => {
                                                    return endorserId === currentUser._id;
                                                })}
                                                type={'checkbox'}

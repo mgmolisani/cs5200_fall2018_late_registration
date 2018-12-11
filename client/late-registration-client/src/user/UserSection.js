@@ -12,7 +12,7 @@ const UserSection = props => {
                                                firstName={user.firstName}
                                                lastName={user.lastName}
                                                teams={user.userType === 'COACH' || user.userType === 'PLAYER' ? user.teams : null}
-                                               endorsements={user.userType === 'PLAYER' ? user.endorsedBy : null}
+                                               endorsedBy={user.userType === 'PLAYER' ? user.endorsedBy : null}
                                                yearsExperience={user.userType === 'COACH' ? user.yearsExperience : null}
                                                rating={user.userType === 'COACH' ? Math.round(user.ratings.reduce((value, acc) => value + acc, 0) / user.ratings.length * 100) / 100 : null}
                                                hiredOn={user.userType === 'MANAGER' ? user.hiredOn : null}
