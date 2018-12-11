@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import GameSection from '../game/GameSection';
-import SearchBar from '../shared/SearchBar';
+import Omnibar from '../shared/Omnibar';
+import UserContext from '../contexts/UserContext';
 
 export default class Game
     extends Component {
@@ -17,6 +18,7 @@ export default class Game
             search: ''
         };
         this.handleSearch = this.handleSearch.bind(this);
+        this.createNewGame = this.createNewGame.bind(this);
     }
 
     handleSearch(search) {
@@ -26,7 +28,12 @@ export default class Game
     filterGames(games) {
         const search = this.state.search.toLowerCase();
         return games.filter(game => game.gameType.toLowerCase().includes(search)
-            || game.location.toLowerCase().includes(search));
+            || game.location.toLowerCase().includes(search)
+            || game.teams.some(team => team.team.name.toLowerCase().includes(search)));
+    }
+
+    createNewGame() {
+        //TODO
     }
 
     componentDidMount() {
@@ -37,6 +44,7 @@ export default class Game
             location: 'My house',
             isOver: true,
             manager: {
+                _id: 3,
                 firstName: 'Dick',
                 lastName: 'Help'
             },
@@ -94,8 +102,14 @@ export default class Game
     render() {
         return (
             <Fragment>
-                <SearchBar value={this.state.seach}
-                           onChange={event => this.handleSearch(event.target.value)}/>
+                <UserContext.Consumer>
+                    {({currentUser}) => <Omnibar value={this.state.search}
+                                                 onChange={event => this.handleSearch(event.target.value)}
+                                                 showButton={currentUser.userType === 'MANAGER'}
+                                                 onClick={this.createNewGame}
+                                                 buttonLabel={'Create New Game'}/>
+                    }
+                </UserContext.Consumer>
                 <GameSection title={'My Games'}
                              games={this.filterGames(this.state.myGames)}/>
                 <GameSection title={'All Games'}

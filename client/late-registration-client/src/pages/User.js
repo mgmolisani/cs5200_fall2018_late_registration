@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import UserSection from '../user/UserSection';
-import SearchBar from '../shared/SearchBar';
+import Omnibar from '../shared/Omnibar';
+import UserContext from '../contexts/UserContext';
 
 export default class User
     extends Component {
@@ -12,6 +13,7 @@ export default class User
     constructor(props) {
         super(props);
         this.state = {
+            profile: [],
             players: [],
             coaches: [],
             managers: [],
@@ -20,6 +22,7 @@ export default class User
             search: ''
         };
         this.handleSearch = this.handleSearch.bind(this);
+        this.createNewUser = this.createNewUser.bind(this);
     }
 
     handleSearch(search) {
@@ -33,7 +36,22 @@ export default class User
             || user.lastName.toLowerCase().includes(search));
     };
 
+    createNewUser() {
+        //TODO
+    }
+
     componentDidMount() {
+        const profile = [
+            {
+                _id: 1,
+                username: 'mm',
+                firstName: 'Mike',
+                lastName: 'Molisani',
+                userType: 'PLAYER',
+                endorsedBy: [4],
+                teams: []
+            }
+        ];
         const players = [
             {
                 _id: 1,
@@ -87,6 +105,7 @@ export default class User
         ];
 
         this.setState({
+            profile: profile,
             players: players,
             coaches: coaches,
             managers: managers,
@@ -98,8 +117,16 @@ export default class User
     render() {
         return (
             <Fragment>
-                <SearchBar value={this.state.search}
-                           onChange={event => this.handleSearch(event.target.value)}/>
+                <UserContext.Consumer>
+                    {({currentUser}) => <Omnibar value={this.state.search}
+                                                 onChange={event => this.handleSearch(event.target.value)}
+                                                 showButton={currentUser.userType === 'ADMIN'}
+                                                 onClick={this.createNewUser}
+                                                 buttonLabel={'Create New User'}/>
+                    }
+                </UserContext.Consumer>
+                <UserSection title={'My Profile'}
+                             users={this.filterUsers(this.state.profile)}/>
                 <UserSection title={'Players'}
                              users={this.filterUsers(this.state.players)}/>
                 <UserSection title={'Coaches'}

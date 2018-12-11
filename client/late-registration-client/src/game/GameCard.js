@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import DynamicCardField from '../shared/DynamicCardField';
 import UserContext from '../contexts/UserContext';
 
@@ -16,11 +16,15 @@ export default class GameCard
             start: '',
             location: '',
             isOver: null,
+            team: '',
             editMode: false,
             showPlayerDetails: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.toggleEditMode = this.toggleEditMode.bind(this);
+        this.addTeam = this.addTeam.bind(this);
+        this.removeTeam = this.removeTeam.bind(this);
+        this.updateScore = this.updateScore.bind(this);
     }
 
     handleChange(input, value) {
@@ -29,6 +33,22 @@ export default class GameCard
 
     toggleEditMode() {
         this.setState(state => ({editMode: !state.editMode}));
+    }
+
+    addTeam() {
+        //TODO check first that its not already there
+        console.log(this.state.team);
+        this.setState({team: ''});
+    }
+
+    removeTeam(teamId) {
+        //TODO
+        console.log(teamId);
+    }
+
+    updateScore(teamId, score) {
+        //TODO
+        console.log(teamId + ' ' + score);
     }
 
     displayWinner() {
@@ -82,21 +102,82 @@ export default class GameCard
                                         : <div className='form-group'>
                                             Game is still in progress
                                         </div>}
+                                    <div className='form-group mb-0'>
+                                        <label>
+                                            Scoreboard
+                                        </label>
+                                        <ul className='list-group'>
+                                            {teams.map(team => <li key={team.team._id}
+                                                                   className='list-group-item'>
+                                                <div className='row justify-content-between align-items-center'>
+                                                    <div className='col'>
+                                                        {team.team.name}
+                                                    </div>
+                                                    <div
+                                                        className='row justify-content-end align-items-center col-auto'>
+                                                        <div className='col-auto text-nowrap'>
+                                                            {team.score}
+                                                        </div>
+                                                        {
+                                                            (
+                                                                currentUser._id === manager._id
+                                                                || currentUser.userType === 'ADMIN'
+                                                            )
+                                                            && <div className='btn-group-vertical col-auto'>
+                                                                <button className='btn btn-success'
+                                                                        onClick={() => this.updateScore(team.team._id, team.score + 1)}>
+                                                                    +
+                                                                </button>
+                                                                <button className='btn btn-danger'
+                                                                        onClick={() => this.updateScore(team.team._id, team.score - 1)}>
+                                                                    -
+                                                                </button>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </li>)}
+                                        </ul>
+                                    </div>
                                 </div>
-                                {
-                                    currentUser.userType === 'ADMIN'
-                                    || currentUser._id === id
-                                        ? <div className='card-footer'>
-                                            <button className='btn btn-secondary btn-block'
-                                                    onClick={this.toggleEditMode}>
-                                                {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
+                                <div className='card-footer'>
+                                    {
+                                        (
+                                            currentUser._id === manager._id
+                                            || currentUser.userType === 'ADMIN'
+                                        )
+                                        && <Fragment>
+                                            <div className='form-group'>
+                                                <label htmlFor={'team'}>
+                                                    Team To Add
+                                                </label>
+                                                <input className='form-control'
+                                                       id={'team'}
+                                                       type={'text'}
+                                                       value={this.state.team}
+                                                       onChange={event => this.handleChange('team', event.target.value)}/>
+                                            </div>
+                                            <button className='btn btn-dark btn-block'
+                                                    onClick={this.addTeam}>
+                                                Add Team
                                             </button>
-                                            <button className='btn btn-danger btn-block'>
-                                                Delete
-                                            </button>
-                                        </div>
-                                        : null
-                                }
+                                        </Fragment>
+                                    }
+                                    {
+                                        currentUser.userType === 'ADMIN'
+                                        || currentUser._id === manager._id
+                                            ? <Fragment>
+                                                <button className='btn btn-secondary btn-block'
+                                                        onClick={this.toggleEditMode}>
+                                                    {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
+                                                </button>
+                                                <button className='btn btn-danger btn-block'>
+                                                    Delete
+                                                </button>
+                                            </Fragment>
+                                            : null
+                                    }
+                                </div>
                             </div>
                         </div>
                     );
