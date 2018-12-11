@@ -19,8 +19,18 @@ const findAllUsers = () => {
 
 const findUserById = id => {
     return userModel.findById(id).exec();
-};
+}
 
+const getTeamsForUser = id => {
+  return findUserById(id)
+  .then( user => {
+      if (user.teams !== undefined) {
+          return user.teams;
+      } else {
+          return null;
+      }
+  })
+}
 
 
 module.exports = {

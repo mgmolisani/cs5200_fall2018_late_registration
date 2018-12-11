@@ -15,6 +15,7 @@ router.get('/getAllUsers', function (req, res, next) {
       new_arr.push(temp);
     }
     res.send(new_arr);
+    return new_arr
   })
   .catch(next);
 });
@@ -44,8 +45,9 @@ router.put('/updateUser/:id', function (req, res, next) {
   let id = req.params.id;
   let user = req.body;
   return userDao.updateUser(id, user)
-  .then(() => {
+  .then(result => {
     res.send('User updated successfully')
+    return result;
 
   })
   .catch(next);
@@ -54,9 +56,9 @@ router.put('/updateUser/:id', function (req, res, next) {
 router.delete('/deleteUserById/:id', function (req, res, next) {
   let id = req.params.id;
   return userDao.deleteUser(id)
-  .then(() => {
+  .then( result => {
     res.send('User deleted successfully')
-
+    return result;
   })
   .catch(next);
 });
