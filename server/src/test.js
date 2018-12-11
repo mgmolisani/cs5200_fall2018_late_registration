@@ -98,7 +98,6 @@ populateDatabase = () => {
     name: "Boston Celtics",
     mascot: "Lucky the Leprechaun",
     hometown: "Boston",
-    coach: 3,
     players: []
   };
 
@@ -107,16 +106,14 @@ populateDatabase = () => {
     name: "New England Patriots",
     mascot: "Pat Patriot",
     hometown: "New England",
-    coach: 4,
-    players: [1, 11]
+    players: []
   };
 
   let redsox = {
     name: "Boston Red Sox",
     mascot: "Red Sox",
     hometown: "Boston",
-    coach: 4,
-    players: [1, 2]
+    players: []
   };
 
 
@@ -133,124 +130,22 @@ populateDatabase = () => {
   queries.push(teamDao.createTeam(redsox));
   queries.push(teamDao.createTeam(patriots));
 
-  queries.push(teamDao.(patriots));
+  queries.push(teamDao.addPlayerToTeam(alice._id, patriots._id));
+  queries.push(teamDao.addPlayerToTeam(bob._id, celtics._id));
+  queries.push(teamDao.addPlayerToTeam(bob._id, redsox._id));
+  queries.push(teamDao.addPlayerToTeam(echo._id, patriots._id));
 
-
-  queries.push(dao.createAnswer(a123));
-  queries.push(dao.createAnswer(a234));
-  queries.push(dao.createAnswer(a345));
-  queries.push(dao.createAnswer(a456));
-  queries.push(dao.createAnswer(a567));
-  queries.push(dao.createAnswer(a678));
-  queries.push(dao.createAnswer(a789));
-  queries.push(dao.createAnswer(a890));
+  queries.push(teamDao.updateCoach(celtics._id, dan._id));
+  queries.push(teamDao.updateCoach(redsox._id, charlie._id));
+  queries.push(teamDao.updateCoach(patriots._id, charlie._id));
 
   results = Promise.all(queries);
 
   return results;
 };
 
-testStudentsInitialCount = () => {
-  return truncateDatabase()
-  .then( () => {
-    return populateDatabase();
-  })
-  .then( () => {
-    return dao.findAllStudents();
-  })
-  .then( students => {
-    let count = students.length;
-    return assert.strictEqual(count, 2, 'Student list size does not equal 2.')
-  })
-};
-
-
-testQuestionsInitialCount = () => {
-  return truncateDatabase()
-  .then( () => {
-    return populateDatabase();
-  })
-  .then( () => {
-    return dao.findAllQuestions();
-  })
-  .then( questions => {
-    let count = questions.length;
-    return assert.strictEqual(count, 4, 'Question list size does not equal 4.')
-  })
-};
-
-testAnswersInitialCount = () => {
-  return truncateDatabase()
-  .then( () => {
-    return populateDatabase();
-  })
-  .then( () => {
-    return dao.findAllAnswers();
-  })
-  .then( answers => {
-    let count = answers.length;
-    return assert.strictEqual(count, 8, 'Answer list size does not equal 8.')
-  })
-};
-
-testDeleteAnswer = () => {
-  return truncateDatabase()
-  .then( () => {
-    return populateDatabase();
-  })
-  .then( () => {
-    return dao.deleteAnswer(123);
-  })
-  .then( () => {
-    return dao.findAllAnswers();
-  })
-  .then( answers => {
-    let count = answers.length;
-    return assert.strictEqual(count, 7, 'Answer list size does not equal 7.')
-  })
-};
-
-testDeleteQuestion = () => {
-  return truncateDatabase()
-  .then( () => {
-    return populateDatabase();
-  })
-  .then( () => {
-    return dao.deleteQuestion(321);
-  })
-  .then( () => {
-    return dao.findAllQuestions();
-  })
-  .then( questions => {
-    let count = questions.length;
-    return assert.strictEqual(count, 3, 'Question list size does not equal 3.')
-  })
-};
-
-testDeleteStudent = () => {
-  return truncateDatabase()
-  .then( () => {
-    return populateDatabase();
-  })
-  .then( () => {
-    return dao.deleteStudent(123);
-  })
-  .then( () => {
-    return dao.findAllStudents();
-  })
-  .then( students => {
-    let count = students.length;
-    return assert.strictEqual(count, 1, 'Student list size does not equal 1.')
-  })
-};
 
 module.exports = {
   truncateDatabase,
-  populateDatabase,
-  testStudentsInitialCount,
-  testQuestionsInitialCount,
-  testAnswersInitialCount,
-  testDeleteAnswer,
-  testDeleteQuestion,
-  testDeleteStudent,
+  populateDatabase
 };
