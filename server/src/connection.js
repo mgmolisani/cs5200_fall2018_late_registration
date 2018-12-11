@@ -22,22 +22,11 @@ app.use(function (req, res, next) {
 });
 
 const connect = function () {
-    return mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/late_registration');
+    return mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/late_registration', { useNewUrlParser: true });
 };
 
 connect()
     .then(() => {
-        require('./src/models/Game').create({
-            gameType: 'Fooseball'
-        });
-        require('./src/models/Game').create({
-            gameType: 'Football'
-        });
-
-        require('./src/models/Team').create({
-            name: 'Warriors'
-        });
-
         app.use('/game', gameRoute);
         app.use('/team', teamRoute);
         app.use('/post', postRoute);
