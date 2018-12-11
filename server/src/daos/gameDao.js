@@ -5,7 +5,7 @@ const createGame = game => {
 };
 
 const updateGame = (id, game) => {
-    return GameModel.findByIdAndUpdate(gameId, game).exec();
+    return GameModel.findByIdAndUpdate(id, game).exec();
 };
 
 const deleteGame = id => {
