@@ -74,18 +74,41 @@ const endorsePlayer = (playerEndorsingId, playerBeingEndorsedId) => {
 };
 
 const unendorsePlayer = (playerEndorsingId, playerBeingEndorsedId) => {
-    return userModel.findByIdAndUpdate(
-        playerBeingEndorsedId,
-        {
-            player: {
-                $pullAll: {
-                    endorsedBy: playerEndorsingId
-                }
-            }
-        },
-        {new: true}
-    ).exec();
+  return userModel.findByIdAndUpdate(
+      playerBeingEndorsedId,
+      {
+        $pull: {
+          "player.endorsedBy": playerEndorsingId
+        }
+      },
+      {new: true}
+  ).exec();
 };
+
+const updateFitbitToken = (userId, fitbitToken) => {
+  return userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          fitbitToken: fitbitToken
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
+const updateFitbitId = (userId, fitbitId) => {
+  return userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          fitbitId: fitbitId
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
 
 module.exports = {
   createUser,
@@ -98,5 +121,7 @@ module.exports = {
   addCoachRating,
   updateYearsExperience,
   endorsePlayer,
-  unendorsePlayer
+  unendorsePlayer,
+  updateFitbitToken,
+  updateFitbitId
 };

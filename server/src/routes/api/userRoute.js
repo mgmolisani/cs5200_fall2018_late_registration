@@ -110,6 +110,31 @@ router.put('/updateYearsExperience/:coachId/:yearsExperience', function (req, re
   .catch(next);
 });
 
+
+router.put('/updateFitbitToken/:userId/:fitbitToken', function (req, res, next) {
+  let fitbitToken = req.params.fitbitToken;
+  let userId = req.params.userId;
+  return userDao.updateFitbitToken(userId, fitbitToken)
+  .then(result => {
+    res.send(result);
+    return result;
+
+  })
+  .catch(next);
+});
+
+router.put('/updateFitbitId/:userId/:fitbitId', function (req, res, next) {
+  let fitbitId = req.params.fitbitId;
+  let userId = req.params.userId;
+  return userDao.updateFitbitId(userId, fitbitId)
+  .then(result => {
+    res.send(result);
+    return result;
+
+  })
+  .catch(next);
+});
+
 router.delete('/deleteUserById/:id', function (req, res, next) {
   let id = req.params.id;
   return teamDao.findAllTeamsForPlayer(id)
