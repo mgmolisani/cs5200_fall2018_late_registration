@@ -21,7 +21,6 @@ router.get('/getAllUsers', function (req, res, next) {
 });
 
 router.get('/getUserById/:id', function (req, res, next) {
-  // res.send('Welcome to the User router.')
   return userDao.findUserById(req.params.id)
   .then(result => {
     let flatUser = flattenUser(result);
@@ -35,7 +34,7 @@ router.post('/createUser', function (req, res, next) {
   let user = req.body;
   return userDao.createUser(user)
   .then(result => {
-    res.send("User added successfully")
+    res.send(result);
     return result;
   })
   .catch(next);
@@ -46,7 +45,7 @@ router.put('/updateUser/:id', function (req, res, next) {
   let user = req.body;
   return userDao.updateUser(id, user)
   .then(result => {
-    res.send('User updated successfully')
+    res.send(result);
     return result;
 
   })
@@ -57,7 +56,7 @@ router.delete('/deleteUserById/:id', function (req, res, next) {
   let id = req.params.id;
   return userDao.deleteUser(id)
   .then( result => {
-    res.send('User deleted successfully')
+    res.send(result);
     return result;
   })
   .catch(next);
@@ -83,7 +82,6 @@ const flattenUser = (user) => {
     delete newUser.coach;
   }
 
-  console.log(newUser)
   return newUser;
 };
 

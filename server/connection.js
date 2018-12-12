@@ -3,10 +3,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
-const gameRoute = require('./src/routes/api/gameRoute');
-const postRoute = require('./src/routes/api/postRoute');
-const teamRoute = require('./src/routes/api/teamRoute');
-const userRoute = require('./src/routes/api/userRoute');
+const gameRoute = require('./routes/api/gameRoute');
+const postRoute = require('./routes/api/postRoute');
+const teamRoute = require('./routes/api/teamRoute');
+const userRoute = require('./routes/api/userRoute');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

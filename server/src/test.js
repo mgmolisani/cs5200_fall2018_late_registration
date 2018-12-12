@@ -116,48 +116,36 @@ populateDatabase = () => {
   queries.push(userDao.createUser(dan));
   queries.push(userDao.createUser(echo));
 
-  let aliceid = userDao.findUserByCredentials(alice.username, alice.password);
-  let bobid = userDao.findUserByCredentials(bob.username, bob.password);
-  let charlieid = userDao.findUserByCredentials(charlie.username, charlie.password);
-  let danid = userDao.findUserByCredentials(dan.username, dan.password);
-  let echoid = userDao.findUserByCredentials(echo.username, alice.password);
-
   queries.push(teamDao.createTeam(celtics));
   queries.push(teamDao.createTeam(redsox));
   queries.push(teamDao.createTeam(patriots));
 
-  let celticsid = teamDao.getTeamByName("Boston Celtics")
-  let patriotsid = teamDao.getTeamByName("New England Patriots")
-  let redsoxid = teamDao.getTeamByName("Boston Red Sox",)
-
-  ids = Promise.all(
-      [aliceid, bobid, charlieid, danid, echoid, celticsid, patriotsid,
-        redsoxid]);
-
-  return ids.then(result => {
-    console.log(result)
-
+  return Promise.all(queries).then(result => {
     alice_obj = result[0];
     bob_obj = result[1];
     charlie_obj = result[2];
     dan_obj = result[3];
     echo_obj = result[4];
     celtics_obj = result[5];
-    patriots_obj = result[6];
-    redsox_obj = result[7];
+    redsox_obj = result[6];
+    patriots_obj = result[7];
 
-    queries.push(teamDao.addPlayerToTeam(alice_obj._id, patriots_obj._id));
-    queries.push(teamDao.addPlayerToTeam(bob_obj._id, celtics_obj._id));
-    queries.push(teamDao.addPlayerToTeam(bob_obj._id, redsox_obj._id));
-    // queries.push(teamDao.addPlayerToTeam(echo_obj._id, patriots_obj._id));
-    //
-    queries.push(teamDao.updateCoach(celtics_obj._id, dan_obj._id));
-    queries.push(teamDao.updateCoach(redsox_obj._id, charlie_obj._id));
-    queries.push(teamDao.updateCoach(patriots_obj._id, charlie_obj._id));
+    updates = []
+
+    updates.push(teamDao.addPlayerToTeam(alice_obj._id, patriots_obj._id));
+    updates.push(teamDao.addPlayerToTeam(bob_obj._id, celtics_obj._id));
+    updates.push(teamDao.addPlayerToTeam(bob_obj._id, redsox_obj._id));
+    updates.push(teamDao.addPlayerToTeam(echo_obj._id, patriots_obj._id));
+
+    updates.push(teamDao.updateCoach(celtics_obj._id, dan_obj._id));
+    updates.push(teamDao.updateCoach(redsox_obj._id, charlie_obj._id));
+    updates.push(teamDao.updateCoach(patriots_obj._id, charlie_obj._id));
+
+    Promise.all(updates).then(result => {
+      return result;
+    });
   })
-  .then(() => {
-    return Promise.all(queries);
-  });
+
 };
 
 module.exports = {

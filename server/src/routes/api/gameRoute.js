@@ -27,7 +27,7 @@ router.post('/createGame', function (req, res, next) {
   let game = req.body;
   return gameDao.createGame(game)
   .then(result => {
-    res.send('Game added successfully')
+    res.send(result);
     return result;
   })
   .catch(next);
@@ -38,7 +38,7 @@ router.put('/updateGame/:id', function (req, res, next) {
   let game = req.body;
   return gameDao.updateGame(id, game)
   .then(result => {
-    res.send('Game updated successfully')
+    res.send(result);
     return result
   })
   .catch(next);
@@ -48,7 +48,7 @@ router.delete('/deleteGameById/:id', function (req, res, next) {
   let id = req.params.id;
   return gameDao.deleteGame(id)
   .then( result => {
-    res.send('Game deleted successfully')
+    res.send(result);
     return result;
 
   })

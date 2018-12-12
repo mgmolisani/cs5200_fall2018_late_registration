@@ -28,7 +28,7 @@ router.post('/createPost', function (req, res, next) {
   let post = req.body;
   return postDao.createPost(post)
   .then( result => {
-    res.send('Post added successfully')
+    res.send(result);
     return result;
 
   })
@@ -40,7 +40,7 @@ router.put('/updatePost/:id', function (req, res, next) {
   let post = req.body;
   return postDao.updatePost(id, post)
   .then( result => {
-    res.send('Post updated successfully')
+    res.send(result);
     return result;
 
   })
@@ -50,7 +50,7 @@ router.delete('/deletePostById/:id', function (req, res, next) {
   let id = req.params.id;
   return postDao.deletePost(id)
   .then( result => {
-    res.send('Post deleted successfully')
+    res.send(result);
     return result;
   })
   .catch(next);

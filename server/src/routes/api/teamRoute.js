@@ -28,7 +28,7 @@ router.post('/createTeam', function (req, res, next) {
   let team = req.body;
   return teamDao.createTeam(team)
   .then( result => {
-    res.send('Team added successfully')
+    res.send(result);
     return result;
 
   })
@@ -40,7 +40,7 @@ router.put('/updateTeam/:id', function (req, res, next) {
   let team = req.body;
   return teamDao.updateTeam(id, team)
   .then( result => {
-    res.send('Team updated successfully')
+    res.send(result);
     return result;
   })
   .catch(next);
@@ -50,7 +50,7 @@ router.delete('/deleteTeamById/:id', function (req, res, next) {
   let id = req.params.id;
   return teamDao.deleteTeam(id)
   .then( result => {
-    res.send('Team deleted successfully')
+    res.send(result);
     return result;
 
   })
