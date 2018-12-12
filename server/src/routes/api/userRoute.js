@@ -112,4 +112,20 @@ router.delete('/deleteUserById/:id', function (req, res, next) {
 });
 
 
+const unflattenUser = (user) => {
+
+  let newUser = {
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    coach: {
+      yearsExperience: user.yearsExperience
+    },
+    manager: {
+      hiredOn: user.hiredOn
+    }
+  };
+
+  return newUser;
+};
 module.exports = router;
