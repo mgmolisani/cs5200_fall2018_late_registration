@@ -27,6 +27,8 @@ export default class User
         this.updateUser = this.updateUser.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
         this.refreshData = this.refreshData.bind(this);
+        this.rateCoach = this.rateCoach.bind(this);
+        this.toggleEndorsement = this.toggleEndorsement.bind(this);
     }
 
     handleSearch(search) {
@@ -60,6 +62,23 @@ export default class User
             .then(() => this.refreshData());
     }
 
+    rateCoach(coachId, rating) {
+        UserService.rateCoach(coachId, rating)
+            .then(() => this.refreshData());
+    }
+
+    toggleEndorsement(endorsee, endorser) {
+        if (endorsee.endorsedBy.some(endoId => {
+            return endoId === endorser._id;
+        })) {
+            UserService.unendorsePlayer(endorsee._id, endorser._id)
+                .then(() => this.refreshData());
+        } else {
+            UserService.endorsePlayer(endorsee._id, endorser._id)
+                .then(() => this.refreshData());
+        }
+    }
+
     refreshData() {
         return UserService.findAllUsers()
             .then(users => {
@@ -86,27 +105,39 @@ export default class User
                     <UserSection title={'My Profile'}
                                  users={this.searchUsers(users.filter(user => user._id === currentUser._id))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Players'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'PLAYER'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Coaches'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'COACH'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Managers'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'MANAGER'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Administrators'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'ADMIN'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'All Users'}
                                  users={this.searchUsers(this.state.users)}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>
                 </Fragment>}
             </UserContext.Consumer>
         );

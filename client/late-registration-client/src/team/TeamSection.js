@@ -9,14 +9,16 @@ const TeamSection = props => {
                                                id={team._id}
                                                team={team}
                                                name={team.name}
-                                               logo={'https://images-platform.99static.com/BYBl73kycvZMCvyWN6v7Ssm4c_U=/420x0:1502x1082/fit-in/900x675/99designs-contests-attachments/80/80458/attachment_80458293'}
+                                               logo={team.logo}
                                                mascot={team.mascot}
                                                hometown={team.hometown}
                                                coach={team.coach}
                                                players={team.players}
                                                posts={team.posts}
                                                updateTeam={(update) => props.updateTeam(team._id, update)}
-                                               deleteTeam={() => props.updateTeam(team._id)}/>
+                                               deleteTeam={() => props.updateTeam(team._id)}
+                                               addPlayerToTeam={(userId) => props.addPlayerToTeam(team._id, userId)}
+                                               removePlayerFromTeam={(userId) => props.removePlayerFromTeam(team._id, userId)}/>
             )}
         </CardSection>
     );

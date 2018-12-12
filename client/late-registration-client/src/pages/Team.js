@@ -22,6 +22,8 @@ export default class Team
         this.createNewTeam = this.createNewTeam.bind(this);
         this.updateTeam = this.updateTeam.bind(this);
         this.deleteTeam = this.deleteTeam.bind(this);
+        this.addPlayerToTeam = this.addPlayerToTeam.bind(this);
+        this.removePlayerFromTeam = this.removePlayerFromTeam.bind(this);
     }
 
     handleSearch(search) {
@@ -52,6 +54,16 @@ export default class Team
             .then(() => this.refreshData());
     }
 
+    addPlayerToTeam(teamId, userId) {
+        TeamService.addPlayerToTeam(teamId, userId)
+            .then(() => this.refreshData());
+    }
+
+    removePlayerFromTeam(teamId, userId) {
+        TeamService.removePlayerFromTeam(teamId, userId)
+            .then(() => this.refreshData());
+    }
+
     refreshData() {
         return TeamService.findAllTeams()
             .then(teams => {
@@ -69,20 +81,24 @@ export default class Team
         return (
             <UserContext.Consumer>
                 {({currentUser}) => <Fragment>
-                        <Omnibar value={this.state.search}
-                                 onChange={event => this.handleSearch(event.target.value)}
-                                 showButton={currentUser.userType === 'COACH'}
-                                 onClick={() => this.createNewTeam(currentUser._id)}
-                                 buttonLabel={'Create New Team'}/>
-                        <TeamSection title={'My Teams'}
-                                     teams={this.filterTeams(this.state.teams)}
-                                     updateTeam={this.updateTeam}
-                                     deleteTeam={this.deleteTeam}/>
-                        <TeamSection title={'All Teams'}
-                                     teams={this.filterTeams(this.state.teams)}
-                                     updateTeam={this.updateTeam}
-                                     deleteTeam={this.deleteTeam}/>
-                    </Fragment>}
+                    <Omnibar value={this.state.search}
+                             onChange={event => this.handleSearch(event.target.value)}
+                             showButton={currentUser.userType === 'COACH'}
+                             onClick={() => this.createNewTeam(currentUser._id)}
+                             buttonLabel={'Create New Team'}/>
+                    <TeamSection title={'My Teams'}
+                                 teams={this.filterTeams(this.state.teams)}
+                                 updateTeam={this.updateTeam}
+                                 deleteTeam={this.deleteTeam}
+                                 addPlayerToTeam={this.addPlayerToTeam}
+                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
+                    <TeamSection title={'All Teams'}
+                                 teams={this.filterTeams(this.state.teams)}
+                                 updateTeam={this.updateTeam}
+                                 deleteTeam={this.deleteTeam}
+                                 addPlayerToTeam={this.addPlayerToTeam}
+                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
+                </Fragment>}
             </UserContext.Consumer>
         );
     }
