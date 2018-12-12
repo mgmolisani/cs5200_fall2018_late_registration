@@ -19,7 +19,6 @@ export default class Team
         };
         this.handleSearch = this.handleSearch.bind(this);
         this.createNewTeam = this.createNewTeam.bind(this);
-        this.createNewTeam = this.createNewTeam.bind(this);
         this.updateTeam = this.updateTeam.bind(this);
         this.deleteTeam = this.deleteTeam.bind(this);
         this.addPlayerToTeam = this.addPlayerToTeam.bind(this);
@@ -49,8 +48,8 @@ export default class Team
             .then(() => this.refreshData());
     }
 
-    deleteTeam(userId) {
-        TeamService.deleteTeam(userId)
+    deleteTeam(teamId) {
+        TeamService.deleteTeam(teamId)
             .then(() => this.refreshData());
     }
 
@@ -87,7 +86,7 @@ export default class Team
                              onClick={() => this.createNewTeam(currentUser._id)}
                              buttonLabel={'Create New Team'}/>
                     <TeamSection title={'My Teams'}
-                                 teams={this.filterTeams(this.state.teams)}
+                                 teams={this.filterTeams(this.state.teams.filter(team => team.coach._id === currentUser._id))}
                                  updateTeam={this.updateTeam}
                                  deleteTeam={this.deleteTeam}
                                  addPlayerToTeam={this.addPlayerToTeam}
