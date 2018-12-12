@@ -1,5 +1,8 @@
 const Schema = require('mongoose').Schema;
 
 module.exports = new Schema({
-    hiredOn: Date
+    hiredOn: {
+        type: Date,
+        default: new Date()
+    }
 });

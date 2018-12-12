@@ -3,7 +3,10 @@ const TeamModel = require('../models/Team');
 const UserModel = require('../models/User');
 
 module.exports = new Schema({
-    start: Date,
+    start: {
+        type: Date,
+        default: new Date()
+    },
     location: String,
     gameType: String,
     teams: [

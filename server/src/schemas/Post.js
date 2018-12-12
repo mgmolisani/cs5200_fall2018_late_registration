@@ -1,12 +1,11 @@
 const Schema = require('mongoose').Schema;
 const UserModel = require('../models/User');
-const TeamModel = require('../models/Team');
 
 module.exports = new Schema({
     content: String,
     created: {
         type: Date,
-        default: Date.now()
+        default: new Date()
     },
     postedBy: {
         type: Schema.Types.ObjectId,

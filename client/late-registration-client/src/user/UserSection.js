@@ -13,6 +13,10 @@ const UserSection = props => {
                                                firstName={user.firstName}
                                                lastName={user.lastName}
                                                password={user.password}
+                                               fitbitId={user.fitbitId}
+                                               fitbitToken={user.fitbitToken}
+                                               distance={user.distance}
+                                               steps={user.steps}
                                                teams={user.userType === 'COACH' || user.userType === 'PLAYER' ? user.teams : null}
                                                endorsedBy={user.userType === 'PLAYER' ? user.endorsedBy : null}
                                                yearsExperience={user.userType === 'COACH' ? user.yearsExperience.toString() : null}

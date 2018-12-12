@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import UserContext from '../contexts/UserContext';
 import DynamicCardField from '../shared/DynamicCardField';
+import {FitbitService} from '../services/FitbitService';
 
 export default class UserCard
     extends Component {
@@ -18,7 +19,8 @@ export default class UserCard
             password: '',
             userType: '',
             yearsExperience: '',
-            hiredOn: '',
+            fitbitId: '',
+            fitbitToken: '',
             editMode: false,
             showPlayerDetails: false
         };
@@ -30,6 +32,10 @@ export default class UserCard
         this.setState({[input]: value});
     }
 
+    componentDidMount() {
+        FitbitService.findLifetimeStats('eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkQ1SEIiLCJzdWIiOiI2WjRENkYiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyYWN0IiwiZXhwIjoxNTQ3MjIyMDQ1LCJpYXQiOjE1NDQ2MzAwNTZ9.JHSPad19vcssMLVSM8C2tr0Prmu3tPLf2DWC9gkT1sQ', '6Z4D6F');
+    }
+
     updateUser() {
         if (this.state.editMode) {
             const user = {
@@ -38,8 +44,9 @@ export default class UserCard
                 firstName: this.state.firstName || this.props.firstName,
                 lastName: this.state.lastName || this.props.lastName,
                 userType: this.state.userType || this.props.userType,
+                fitbitId: this.state.fitbitId || this.props.fitbitId,
+                fitbitToken: this.state.fitbitToken || this.props.fitbitToken,
                 yearsExperience: this.state.yearsExperience ? parseInt(this.state.yearsExperience, 10) : parseInt(this.props.yearsExperience, 10),
-                hiredOn: this.state.hiredOn || this.props.hiredOn
             };
             this.props.updateUser(user);
         }
@@ -47,7 +54,7 @@ export default class UserCard
     }
 
     render() {
-        const {id, username, firstName, lastName, password, userType, teams, endorsedBy, rating, yearsExperience, hiredOn} = this.props;
+        const {id, username, firstName, lastName, password, userType, fitbitId, fitbitToken, distance, steps, teams, endorsedBy, rating, yearsExperience, hiredOn} = this.props;
         return (
             <UserContext.Consumer>
                 {({currentUser}) => {
@@ -73,17 +80,43 @@ export default class UserCard
                                                       defaultValue={lastName}
                                                       onChange={event => this.handleChange('lastName', event.target.value)}
                                                       isEditing={this.state.editMode}/>
+                                    {fitbitId
+                                    && fitbitToken
+                                    && <Fragment>
+                                        <DynamicCardField id={id}
+                                                          label={'Distance Traveled'}
+                                                          defaultValue={distance + ' km'}/>
+                                        <DynamicCardField id={id}
+                                                          label={'Steps'}
+                                                          defaultValue={steps + ' steps'}/>
+                                    </Fragment>}
                                     {
                                         (
                                             currentUser.userType === 'ADMIN'
                                             || currentUser._id === id
                                         )
-                                        && <DynamicCardField id={id}
-                                                             label={'Password'}
-                                                             value={this.state.password}
-                                                             defaultValue={password}
-                                                             onChange={event => this.handleChange('password', event.target.value)}
-                                                             isEditing={this.state.editMode}/>
+                                        && <Fragment>
+                                            <DynamicCardField id={id}
+                                                              label={'Password'}
+                                                              value={this.state.password}
+                                                              defaultValue={password}
+                                                              onChange={event => this.handleChange('password', event.target.value)}
+                                                              isEditing={this.state.editMode}/>
+                                            <DynamicCardField id={id}
+                                                              label={'Fitbit ID'}
+                                                              value={this.state.fitbitId}
+                                                              defaultValue={fitbitId}
+                                                              onChange={event => this.handleChange('fitbitId', event.target.value)}
+                                                              isEditing={this.state.editMode}
+                                                              hidden/>
+                                            <DynamicCardField id={id}
+                                                              label={'Fitbit Token'}
+                                                              value={this.state.fitbitToken}
+                                                              defaultValue={fitbitToken}
+                                                              onChange={event => this.handleChange('fitbitToken', event.target.value)}
+                                                              isEditing={this.state.editMode}
+                                                              hidden/>
+                                        </Fragment>
                                     }
                                     {currentUser.userType === 'ADMIN'
                                     && <div className='form-group'>
@@ -124,10 +157,7 @@ export default class UserCard
                                     {userType === 'MANAGER'
                                     && <DynamicCardField id={id}
                                                          label={'Date of Hire'}
-                                                         value={this.state.hiredOn}
-                                                         defaultValue={hiredOn}
-                                                         onChange={event => this.handleChange('hiredOn', event.target.value)}
-                                                         isEditing={this.state.editMode}/>}
+                                                         defaultValue={hiredOn}/>}
                                     {userType === 'COACH'
                                     && !isNaN(rating)
                                     && <DynamicCardField id={id}

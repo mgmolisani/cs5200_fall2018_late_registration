@@ -3,6 +3,7 @@ import UserSection from '../user/UserSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
 import {UserService} from '../services/UserService';
+import {FitbitService} from '../services/FitbitService';
 
 export default class User
     extends Component {
@@ -81,6 +82,22 @@ export default class User
 
     refreshData() {
         return UserService.findAllUsers()
+            .then(users => {
+                return Promise.all(users.map(user => {
+                    console.log((user.fitbitToken && user.fitbitToken) !== undefined);
+                    if ((user.fitbitToken && user.fitbitToken) !== undefined) {
+                        return FitbitService.findLifetimeStats(user.fitbitToken, user.fitbitId)
+                            .then(stats => {
+                                console.log(stats);
+                                user.distance = stats.distance;
+                                user.steps = stats.steps;
+                                return user;
+                            });
+                    } else {
+                        return user;
+                    }
+                }));
+            })
             .then(users => {
                 this.setState({
                     users: users
