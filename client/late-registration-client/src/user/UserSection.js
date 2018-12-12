@@ -20,7 +20,8 @@ const UserSection = props => {
                                                hiredOn={user.userType === 'MANAGER' ? user.hiredOn : null}
                                                updateUser={(update) => props.updateUser(user._id, update)}
                                                deleteUser={() => props.deleteUser(user._id)}
-                />
+                                               rateCoach={rating => props.rateCoach(user._id, rating)}
+                                               toggleEndorsement={endorser => props.toggleEndorsement(user, endorser)}/>
             )}
         </CardSection>
     );
