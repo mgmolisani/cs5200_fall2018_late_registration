@@ -13,15 +13,6 @@ const getTeamByName = (teamName) => {
 
 };
 
-const updateScore = (id, score) => {
-  return findTeamById(id)
-  .then(result => {
-    let clone = JSON.parse(JSON.stringify(result));
-    clone.score = score;
-    return teamModel.findByIdAndUpdate(id, clone)
-  })
-};
-
 
 const updateCoach = (teamId, coachId) => {
   return findTeamById(teamId)
@@ -97,6 +88,10 @@ const findTeamById = id => {
   return teamModel.findById(id).exec();
 };
 
+// const findAllTeamsForPlayer = (playerId) => {
+//   teamModel.
+//   return userModel.findOne({username: username, password: password}).exec();
+// }
 module.exports = {
   createTeam,
   updateTeam,
@@ -107,7 +102,6 @@ module.exports = {
   removePlayerFromTeam,
   updateCoach,
   getTeamByName,
-  updateScore,
   addPostToTeam,
   removePostFromTeam
 };

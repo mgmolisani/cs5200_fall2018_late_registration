@@ -101,17 +101,6 @@ router.put('/removePostFromTeam/:teamId/:postId', function (req, res, next) {
   .catch(next);
 });
 
-router.put('/updateScore/:teamId/:score', function (req, res, next) {
-  let teamId = req.params.teamId;
-  let score = req.params.score;
-  return teamDao.updateScore(teamId, score)
-  .then( result => {
-    res.send(result);
-    return result;
-  })
-  .catch(next);
-});
-
 router.delete('/deleteTeamById/:id', function (req, res, next) {
   let id = req.params.id;
   return teamDao.deleteTeam(id)
