@@ -40,6 +40,18 @@ router.post('/createUser', function (req, res, next) {
   .catch(next);
 });
 
+router.post('/getUserByCredentials', function (req, res, next) {
+  let username = req.body.username;
+  let password = req.body.password;
+
+  return userDao.findUserByCredentials(username, password)
+  .then(result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
 router.put('/updateUser/:id', function (req, res, next) {
   let id = req.params.id;
   let user = req.body;
