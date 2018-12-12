@@ -48,18 +48,14 @@ export const TeamService = {
             return response.json();
         });
     },
-    joinTeam: (teamId, userId) => {
-        return fetch(TEAM_API_URL + '/updateTeam/' + userId, {
+    addPlayerToTeam: (teamId, userId) => {
+        return fetch(TEAM_API_URL + '/addPlayerToTeam/' + teamId + '/' + userId, {
             method: 'PUT'
-        }).then(function (response) {
-            return response.json();
-        });
+        })
     },
-    leaveTeam: (teamId, userId) => {
-        return fetch(TEAM_API_URL + '/updateTeam/' + userId, {
+    removePlayerFromTeam: (teamId, userId) => {
+        return fetch(TEAM_API_URL + '/removePlayerFromTeam/' + teamId + '/' + userId, {
             method: 'PUT'
-        }).then(function (response) {
-            return response.json();
-        });
+        })
     }
 };

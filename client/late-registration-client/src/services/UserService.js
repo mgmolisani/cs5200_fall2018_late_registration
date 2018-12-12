@@ -45,5 +45,15 @@ export const UserService = {
         }).then(function (response) {
             return response.json();
         });
+    },
+    rateCoach: (coachId, rating) => {
+        return fetch(USER_API_URL + '/addCoachRating/' + coachId + '/' + rating, {
+            method: 'PUT',
+        })
+    },
+    endorsePlayer: (endorseeId, endorserId) => {
+        return fetch(USER_API_URL + '/endorsePlayer/' + endorserId + '/' + endorseeId, {
+            method: 'PUT',
+        })
     }
 };

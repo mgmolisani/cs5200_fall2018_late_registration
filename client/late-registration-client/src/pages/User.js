@@ -27,6 +27,8 @@ export default class User
         this.updateUser = this.updateUser.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
         this.refreshData = this.refreshData.bind(this);
+        this.rateCoach = this.rateCoach.bind(this);
+        this.endorsePlayer = this.endorsePlayer.bind(this);
     }
 
     handleSearch(search) {
@@ -60,6 +62,16 @@ export default class User
             .then(() => this.refreshData());
     }
 
+    rateCoach(coachId, rating) {
+        UserService.rateCoach(coachId, rating)
+            .then(() => this.refreshData());
+    }
+
+    endorsePlayer(endorseeId, endorserId) {
+        UserService.endorsePlayer(endorseeId, endorserId)
+            .then(() => this.refreshData());
+    }
+
     refreshData() {
         return UserService.findAllUsers()
             .then(users => {
@@ -86,27 +98,39 @@ export default class User
                     <UserSection title={'My Profile'}
                                  users={this.searchUsers(users.filter(user => user._id === currentUser._id))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 endorsePlayer={this.endorsePlayer}/>
                     <UserSection title={'Players'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'PLAYER'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 endorsePlayer={this.endorsePlayer}/>
                     <UserSection title={'Coaches'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'COACH'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 endorsePlayer={this.endorsePlayer}/>
                     <UserSection title={'Managers'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'MANAGER'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 endorsePlayer={this.endorsePlayer}/>
                     <UserSection title={'Administrators'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'ADMIN'))}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 endorsePlayer={this.endorsePlayer}/>
                     <UserSection title={'All Users'}
                                  users={this.searchUsers(this.state.users)}
                                  updateUser={this.updateUser}
-                                 deleteUser={this.deleteUser}/>
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 endorsePlayer={this.endorsePlayer}/>
                 </Fragment>}
             </UserContext.Consumer>
         );

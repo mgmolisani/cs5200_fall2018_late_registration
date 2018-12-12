@@ -25,8 +25,6 @@ export default class TeamCard
         this.updateTeam = this.updateTeam.bind(this);
         this.togglePlayerDetails = this.togglePlayerDetails.bind(this);
         this.togglePosts = this.togglePosts.bind(this);
-        this.joinTeam = this.joinTeam.bind(this);
-        this.leaveTeam = this.leaveTeam.bind(this);
         this.postContent = this.postContent.bind(this);
     }
 
@@ -53,16 +51,6 @@ export default class TeamCard
 
     togglePosts() {
         this.setState(state => ({showPosts: !state.showPosts}));
-    }
-
-    joinTeam(userId) {
-        //TODO
-        console.log(this.props.id + ' ' + userId);
-    }
-
-    leaveTeam(userId) {
-        //TODO
-        console.log(this.props.id + ' ' + userId);
     }
 
     postContent() {
@@ -123,7 +111,17 @@ export default class TeamCard
                                             ? <ul className='list-group'>
                                                 {players.map(player => <li key={player._id}
                                                                            className='list-group-item'>
+                                                    <div className='d-flex justify-content-between align-items-center'>
                                                     {player.firstName} {player.lastName}
+                                                    {(
+                                                        currentUser._id === coach._id
+                                                        || currentUser.userType === 'ADMIN'
+                                                    )
+                                                    && <button className='btn btn-danger btn-sm my-3'
+                                                               onClick={() => this.props.removePlayerFromTeam(player._id)}>
+                                                        X
+                                                    </button>}
+                                                    </div>
                                                 </li>)}
                                             </ul>
                                             : <h5>
@@ -191,11 +189,11 @@ export default class TeamCard
                                         currentUser.userType === 'PLAYER'
                                             ? players.some(player => player._id === currentUser._id)
                                             ? <button className='btn btn-danger btn-block'
-                                                      onClick={() => this.leaveTeam(currentUser._id)}>
+                                                      onClick={() => this.props.removePlayerFromTeam(currentUser._id)}>
                                                 Leave Team
                                             </button>
                                             : <button className='btn btn-success btn-block'
-                                                      onClick={() => this.joinTeam(currentUser._id)}>
+                                                      onClick={() => this.props.addPlayerToTeam(currentUser._id)}>
                                                 Join Team
                                             </button>
                                             : null

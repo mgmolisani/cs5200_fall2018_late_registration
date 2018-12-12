@@ -60,15 +60,27 @@ router.put('/updateUser/:id', function (req, res, next) {
 });
 
 router.put('/endorsePlayer/:playerEndorsingId/:playerBeingEndorsedId', function (req, res, next) {
-  let playerEndorsingId = req.params.playerEndorsingId;
-  let playerBeingEndorsedId = req.params.playerBeingEndorsedId;
-  return userDao.endorsePlayer(playerEndorsingId, playerBeingEndorsedId)
-  .then(result => {
-    res.send(result);
-    return result;
+    let playerEndorsingId = req.params.playerEndorsingId;
+    let playerBeingEndorsedId = req.params.playerBeingEndorsedId;
+    return userDao.endorsePlayer(playerEndorsingId, playerBeingEndorsedId)
+        .then(result => {
+            res.send(result);
+            return result;
 
-  })
-  .catch(next);
+        })
+        .catch(next);
+});
+
+router.put('/unendorsePlayer/:playerEndorsingId/:playerBeingEndorsedId', function (req, res, next) {
+    let playerEndorsingId = req.params.playerEndorsingId;
+    let playerBeingEndorsedId = req.params.playerBeingEndorsedId;
+    return userDao.unendorsePlayer(playerEndorsingId, playerBeingEndorsedId)
+        .then(result => {
+            res.send(result);
+            return result;
+
+        })
+        .catch(next);
 });
 
 

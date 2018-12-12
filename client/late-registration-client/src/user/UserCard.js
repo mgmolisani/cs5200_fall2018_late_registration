@@ -24,8 +24,6 @@ export default class UserCard
         };
         this.handleChange = this.handleChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
-        this.endorsePlayer = this.endorsePlayer.bind(this);
-        this.rateCoach = this.rateCoach.bind(this);
     }
 
     handleChange(input, value) {
@@ -46,16 +44,6 @@ export default class UserCard
             this.props.updateUser(user);
         }
         this.setState(state => ({editMode: !state.editMode}));
-    }
-
-    endorsePlayer(endorseeId, endorserId) {
-        //TODO
-        console.log(endorseeId + ' ' + endorserId);
-    }
-
-    rateCoach(coachId, rating) {
-        //TODO
-        console.log(coachId + ' ' + rating);
     }
 
     render() {
@@ -156,7 +144,7 @@ export default class UserCard
                                         <div className='btn-group w-100'>
                                             {[1, 2, 3, 4, 5].map(rating => <button key={rating}
                                                                                    className='btn btn-secondary w-100'
-                                                                                   onClick={() => this.rateCoach(id, rating)}>
+                                                                                   onClick={() => this.props.rateCoach(rating)}>
                                                 {rating}
                                             </button>)}
                                         </div>
@@ -173,7 +161,7 @@ export default class UserCard
                                                    return endorserId === currentUser._id;
                                                })}
                                                type={'checkbox'}
-                                               onChange={() => this.endorsePlayer(id, currentUser._id)}/>
+                                               onChange={() => this.props.endorsePlayer(currentUser._id)}/>
                                     </div>}
                                     {(
                                         currentUser.userType === 'ADMIN'
