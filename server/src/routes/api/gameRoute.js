@@ -56,10 +56,10 @@ router.put('/addTeamToGame/:gameId/:teamId', function (req, res, next) {
 });
 
 
-router.put('/addTeamToGame/:gameId/:teamId', function (req, res, next) {
+router.put('/addTeamToGameByTeamName/:gameId/:teamName', function (req, res, next) {
   let gameId = req.params.gameId;
-  let teamId = req.params.teamId;
-  return gameDao.addTeamToGame(gameId, teamId)
+  let teamName = req.params.teamId;
+  return gameDao.addTeamToGameByTeamName(gameId, teamName)
   .then( result => {
     res.send(result);
     return result;
@@ -84,6 +84,16 @@ router.put('/updateScore/:gameId/:teamId/:score', function (req, res, next) {
   let teamId = req.params.teamId;
   let score = req.params.score;
   return gameDao.updateTeamScore(gameId, teamId, score)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
+router.put('/endGame/:gameId/', function (req, res, next) {
+  let gameId = req.params.gameId;
+  return gameDao.endGame(gameId)
   .then( result => {
     res.send(result);
     return result;
