@@ -35,29 +35,6 @@ const getTeamsForUser = id => {
   })
 }
 
-const flattenUser = (user) => {
-
-  let newUser = JSON.parse(JSON.stringify(user));
-
-  switch (user.userType) {
-    case "Player":
-      newUser.teams = user.player.teams;
-      newUser.endorsedBy = user.player.endorsedBy;
-      delete newUser.player;
-      break;
-    case "MANAGER":
-      newUser.hiredOn = user.manager.hiredOn;
-      delete newUser.manager;
-      break;
-    case "COACH":
-      newUser.ratings = user.coach.ratings;
-      newUser.yearsExperience = user.coach.yearsExperience;
-      delete newUser.coach;
-      break;
-  }
-
-  return newUser;
-};
 
 module.exports = {
   createUser,
@@ -66,6 +43,5 @@ module.exports = {
   findAllUsers,
   findUserById,
   findUserByCredentials,
-  getTeamsForUser,
-  flattenUser
+  getTeamsForUser
 };

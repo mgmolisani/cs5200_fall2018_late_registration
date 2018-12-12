@@ -6,7 +6,7 @@ export const UserService = {
         return fetch(USER_API_URL + '/getAllUsers')
             .then(function (response) {
                 return response.json();
-            }).then((users) => console.log(users));
+            });
     },
     findUserByCredentials: (credentials) => {
         return fetch(USER_API_URL + '/getUserByCredentials', {
@@ -42,6 +42,8 @@ export const UserService = {
             headers: {
                 'Content-Type': 'application/json'
             }
+        }).then(function (response) {
+            return response.json();
         });
     }
 };

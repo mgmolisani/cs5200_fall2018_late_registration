@@ -3,6 +3,7 @@ const UserModel = require('../models/User');
 
 module.exports = new Schema({
     name: String,
+    logo: String,
     mascot: String,
     hometown: String,
     coach: {

@@ -52,7 +52,7 @@ export default class Home
                                   users={Home.users}/>
                     <h2 className='text-center'>
                         {currentUser
-                            ? `You are currently imitating ${currentUser.username}.`
+                            ? `You are currently logged in as ${currentUser.username}.`
                             : 'Select a user to log in as from the selections above or make a new user below and' +
                             ' automatically be logged in as the new user.'
                         }
