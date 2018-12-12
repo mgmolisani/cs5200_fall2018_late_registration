@@ -46,6 +46,28 @@ router.put('/updateTeam/:id', function (req, res, next) {
   .catch(next);
 });
 
+router.put('/addPlayerToTeam/:teamId/:playerId', function (req, res, next) {
+  let teamId = req.params.teamId;
+  let playerId = req.params.playerId;
+  return teamDao.addPlayerToTeam(teamId, playerId)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
+router.put('/removePlayerFromTeam/:teamId/:playerId', function (req, res, next) {
+  let teamId = req.params.teamId;
+  let playerId = req.params.playerId;
+  return teamDao.removePlayerFromTeam(teamId, playerId)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
 router.delete('/deleteTeamById/:id', function (req, res, next) {
   let id = req.params.id;
   return teamDao.deleteTeam(id)
