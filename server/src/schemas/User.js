@@ -17,7 +17,17 @@ module.exports = new Schema({
             'ADMIN'
         ]
     },
-    player: PlayerSchema,
-    coach: CoachSchema,
-    manager: ManagerSchema
+
+    player: {
+      type: PlayerSchema,
+      default: PlayerSchema
+    },
+    coach: {
+      type: CoachSchema,
+      default: CoachSchema
+    },
+    manager: {
+      type: ManagerSchema,
+      default: ManagerSchema
+    },
 }, {collection: 'user'});
