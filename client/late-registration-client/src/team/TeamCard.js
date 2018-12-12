@@ -36,14 +36,12 @@ export default class TeamCard
 
     updateTeam() {
         if (this.state.editMode) {
-            this.props.updateUser({
+            this.props.updateTeam({
                 ...this.props.team,
-                username: this.state.username || this.props.username,
-                firstName: this.state.firstName || this.props.firstName,
-                lastName: this.state.lastName || this.props.lastName,
-                userType: this.state.userType || this.props.userType,
-                yearsExperience: this.state.yearsExperience || this.props.yearsExperience,
-                hiredOn: this.state.hiredOn || this.props.hiredOn
+                name: this.state.name || this.props.name,
+                logo: this.state.logo || this.props.logo,
+                mascot: this.state.mascot || this.props.mascot,
+                hometown: this.state.hometown || this.props.hometown
             });
         }
         this.setState(state => ({editMode: !state.editMode}));

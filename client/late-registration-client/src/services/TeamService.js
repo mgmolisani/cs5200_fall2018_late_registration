@@ -47,5 +47,19 @@ export const TeamService = {
         }).then(function (response) {
             return response.json();
         });
+    },
+    joinTeam: (teamId, userId) => {
+        return fetch(TEAM_API_URL + '/updateTeam/' + userId, {
+            method: 'PUT'
+        }).then(function (response) {
+            return response.json();
+        });
+    },
+    leaveTeam: (teamId, userId) => {
+        return fetch(TEAM_API_URL + '/updateTeam/' + userId, {
+            method: 'PUT'
+        }).then(function (response) {
+            return response.json();
+        });
     }
 };
