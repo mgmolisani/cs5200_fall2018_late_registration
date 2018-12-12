@@ -62,7 +62,11 @@ const removePlayerFromTeam = (teamId, playerId) => {
 };
 
 const findAllTeams = () => {
-  return teamModel.find().exec();
+  return teamModel.find()
+      .populate('posts')
+      .populate('players')
+      .populate('coach')
+      .exec();
 };
 
 const findTeamById = id => {

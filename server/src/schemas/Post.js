@@ -15,9 +15,5 @@ module.exports = new Schema({
     postedBy: {
         type: Schema.Types.ObjectId,
         ref: UserModel
-    },
-    team: {
-        type: Schema.Types.ObjectId,
-        ref: TeamModel
     }
 }, {collection: 'post'});

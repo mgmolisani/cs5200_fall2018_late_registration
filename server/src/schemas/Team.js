@@ -1,5 +1,6 @@
 const Schema = require('mongoose').Schema;
 const UserModel = require('../models/User');
+const PostModel = require('../models/Post');
 
 module.exports = new Schema({
     name: String,
@@ -13,5 +14,9 @@ module.exports = new Schema({
     players: [{
         type: Schema.Types.ObjectId,
         ref: UserModel
+    }],
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: PostModel
     }]
 }, {collection: 'team'});
