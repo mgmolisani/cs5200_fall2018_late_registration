@@ -1,5 +1,4 @@
-//const USER_API_URL = 'https://late-registration-server.herokuapp.com/user/';
-const GAME_API_URL = 'http://localhost:5000/game';
+const GAME_API_URL = (process.env ? 'https://late-registration-server.herokuapp.com' : 'http://localhost:5000') + '/game';
 
 export const GameService = {
     findAllGames: () => {

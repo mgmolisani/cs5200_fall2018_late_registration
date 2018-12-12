@@ -1,7 +1,4 @@
-//const TEAM_API_URL = 'https://late-registration-server.herokuapp.com/team';
-import Team from '../pages/Team';
-
-const TEAM_API_URL = 'http://localhost:5000/team';
+const TEAM_API_URL = (process.env ? 'https://late-registration-server.herokuapp.com' : 'http://localhost:5000') + '/team';
 
 export const TeamService = {
     findAllTeams: () => {
@@ -51,21 +48,21 @@ export const TeamService = {
     addPlayerToTeam: (teamId, userId) => {
         return fetch(TEAM_API_URL + '/addPlayerToTeam/' + teamId + '/' + userId, {
             method: 'PUT'
-        })
+        });
     },
     removePlayerFromTeam: (teamId, userId) => {
         return fetch(TEAM_API_URL + '/removePlayerFromTeam/' + teamId + '/' + userId, {
             method: 'PUT'
-        })
+        });
     },
     addPostToTeam: (teamId, postId) => {
         return fetch(TEAM_API_URL + '/addPostToTeam/' + teamId + '/' + postId, {
             method: 'PUT'
-        })
+        });
     },
     removePostFromTeam: (teamId, postId) => {
         return fetch(TEAM_API_URL + '/removePostFromTeam/' + teamId + '/' + postId, {
             method: 'PUT'
-        })
+        });
     }
 };
