@@ -8,10 +8,6 @@ module.exports = new Schema({
         type: Date,
         default: Date.now()
     },
-    updated: {
-        type: Date,
-        default: Date.now()
-    },
     postedBy: {
         type: Schema.Types.ObjectId,
         ref: UserModel

@@ -3,6 +3,7 @@ import TeamSection from '../team/TeamSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
 import {TeamService} from '../services/TeamService';
+import {PostService} from '../services/PostService';
 
 export default class Team
     extends Component {
@@ -23,6 +24,8 @@ export default class Team
         this.deleteTeam = this.deleteTeam.bind(this);
         this.addPlayerToTeam = this.addPlayerToTeam.bind(this);
         this.removePlayerFromTeam = this.removePlayerFromTeam.bind(this);
+        this.addPostToTeam = this.addPostToTeam.bind(this);
+        this.removePostFromTeam = this.removePostFromTeam.bind(this);
     }
 
     handleSearch(search) {
@@ -63,6 +66,21 @@ export default class Team
             .then(() => this.refreshData());
     }
 
+    addPostToTeam(teamId, post) {
+        PostService.createPost(post)
+            .then(post => {
+                return TeamService.addPostToTeam(teamId, post._id);
+            })
+            .then(() => this.refreshData());
+        this.setState({post: ''});
+    }
+
+    removePostFromTeam(teamId, postId) {
+        PostService.deletePost(postId)
+            .then(() => TeamService.removePostFromTeam(teamId, postId))
+            .then(() => this.refreshData());
+    }
+
     refreshData() {
         return TeamService.findAllTeams()
             .then(teams => {
@@ -90,13 +108,17 @@ export default class Team
                                  updateTeam={this.updateTeam}
                                  deleteTeam={this.deleteTeam}
                                  addPlayerToTeam={this.addPlayerToTeam}
-                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
+                                 removePlayerFromTeam={this.removePlayerFromTeam}
+                                 addPostToTeam={this.addPostToTeam}
+                                 removePostFromTeam={this.removePostFromTeam}/>
                     <TeamSection title={'All Teams'}
                                  teams={this.filterTeams(this.state.teams)}
                                  updateTeam={this.updateTeam}
                                  deleteTeam={this.deleteTeam}
                                  addPlayerToTeam={this.addPlayerToTeam}
-                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
+                                 removePlayerFromTeam={this.removePlayerFromTeam}
+                                 addPostToTeam={this.addPostToTeam}
+                                 removePostFromTeam={this.removePostFromTeam}/>
                 </Fragment>}
             </UserContext.Consumer>
         );

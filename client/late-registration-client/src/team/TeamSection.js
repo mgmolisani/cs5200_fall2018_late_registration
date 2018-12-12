@@ -16,9 +16,11 @@ const TeamSection = props => {
                                                players={team.players}
                                                posts={team.posts}
                                                updateTeam={(update) => props.updateTeam(team._id, update)}
-                                               deleteTeam={() => props.updateTeam(team._id)}
+                                               deleteTeam={() => props.deleteTeam(team._id)}
                                                addPlayerToTeam={(userId) => props.addPlayerToTeam(team._id, userId)}
-                                               removePlayerFromTeam={(userId) => props.removePlayerFromTeam(team._id, userId)}/>
+                                               removePlayerFromTeam={(userId) => props.removePlayerFromTeam(team._id, userId)}
+                                               addPostToTeam={post => props.addPostToTeam(team._id, post)}
+                                               removePostFromTeam={postId => props.removePostFromTeam(team._id, postId)}/>
             )}
         </CardSection>
     );

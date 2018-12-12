@@ -57,5 +57,15 @@ export const TeamService = {
         return fetch(TEAM_API_URL + '/removePlayerFromTeam/' + teamId + '/' + userId, {
             method: 'PUT'
         })
+    },
+    addPostToTeam: (teamId, postId) => {
+        return fetch(TEAM_API_URL + '/addPostToTeam/' + teamId + '/' + postId, {
+            method: 'PUT'
+        })
+    },
+    removePostFromTeam: (teamId, postId) => {
+        return fetch(TEAM_API_URL + '/removePostFromTeam/' + teamId + '/' + postId, {
+            method: 'PUT'
+        })
     }
 };

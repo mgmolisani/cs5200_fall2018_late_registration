@@ -3,6 +3,7 @@ import GameSection from '../game/GameSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
 import {GameService} from '../services/GameService';
+import TeamSection from '../team/TeamSection';
 
 export default class Game
     extends Component {
@@ -74,9 +75,13 @@ export default class Game
                              onClick={() => this.createNewGame(currentUser._id)}
                              buttonLabel={'Create New Game'}/>
                     <GameSection title={'My Games'}
-                                 games={this.filterGames(this.state.games.filter(game => game.manager._id === currentUser._id))}/>
+                                 games={this.filterGames(this.state.games.filter(game => game.manager._id === currentUser._id))}
+                                 updateGame={this.updateGame}
+                                 deleteGame={this.deleteGame}/>
                     <GameSection title={'All Games'}
-                                 games={this.filterGames(this.state.games)}/>
+                                 games={this.filterGames(this.state.games)}
+                                 updateGame={this.updateGame}
+                                 deleteGame={this.deleteGame}/>
                 </Fragment>}
             </UserContext.Consumer>
         );

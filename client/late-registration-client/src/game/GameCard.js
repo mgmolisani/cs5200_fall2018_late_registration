@@ -21,7 +21,7 @@ export default class GameCard
             showPlayerDetails: false
         };
         this.handleChange = this.handleChange.bind(this);
-        this.toggleEditMode = this.toggleEditMode.bind(this);
+        this.updateGame = this.updateGame.bind(this);
         this.addTeam = this.addTeam.bind(this);
         this.removeTeam = this.removeTeam.bind(this);
         this.updateScore = this.updateScore.bind(this);
@@ -31,7 +31,15 @@ export default class GameCard
         this.setState({[input]: value});
     }
 
-    toggleEditMode() {
+    updateGame() {
+        if (this.state.editMode) {
+            this.props.updateGame({
+                ...this.props.game,
+                start: this.state.start || this.props.start,
+                location: this.state.location || this.props.location,
+                gameType: this.state.gameType || this.props.gameType
+            });
+        }
         this.setState(state => ({editMode: !state.editMode}));
     }
 
@@ -168,10 +176,11 @@ export default class GameCard
                                         || currentUser._id === manager._id
                                             ? <Fragment>
                                                 <button className='btn btn-secondary btn-block'
-                                                        onClick={this.toggleEditMode}>
+                                                        onClick={this.updateGame}>
                                                     {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
                                                 </button>
-                                                <button className='btn btn-danger btn-block'>
+                                                <button className='btn btn-danger btn-block'
+                                                        onClick={this.props.deleteGame}>
                                                     Delete
                                                 </button>
                                             </Fragment>

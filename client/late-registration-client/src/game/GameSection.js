@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import TeamCard from '../team/TeamCard';
 import CardSection from '../shared/CardSection';
 import GameCard from './GameCard';
 
@@ -9,12 +7,15 @@ const GameSection = props => {
         <CardSection title={props.title}>
             {props.games.map(game => <GameCard key={game._id}
                                                id={game._id}
+                                               game={game}
                                                gameType={game.gameType}
                                                start={game.start}
                                                location={game.location}
                                                isOver={game.isOver}
                                                manager={game.manager}
-                                               teams={game.teams}/>
+                                               teams={game.teams}
+                                               updateGame={(update) => props.updateGame(game._id, update)}
+                                               deleteGame={() => props.deleteGame(game._id)}/>
             )}
         </CardSection>
     );
