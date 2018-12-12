@@ -9,9 +9,9 @@ router.get('/getAllUsers', function (req, res, next) {
   return userDao.findAllUsers()
   .then(result => {
     var new_arr = [];
-    for (i in result) {
+    for (let i in result) {
       // var temp = {};
-      let temp = flattenUser(result[i])
+      let temp = flattenUser(result[i]);
       new_arr.push(temp);
     }
     res.send(new_arr);

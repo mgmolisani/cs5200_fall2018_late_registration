@@ -9,11 +9,10 @@ const LoginSection = props => {
             {({currentUser, setCurrentUser}) => {
                 return (
                     <CardSection title={props.title}>
-                        {props.users.map(user => <LoginCard key={user._id}
-                                                            id={user._id}
-                                                            username={user.username}
-                                                            currentUser={currentUser}
-                                                            setCurrentUser={() => setCurrentUser(user)}/>
+                        {props.users.map((user, index) => <LoginCard key={index}
+                                                                     username={user.username}
+                                                                     password={user.password}
+                                                                     setCurrentUser={() => setCurrentUser(user)}/>
                         )}
                     </CardSection>
                 );

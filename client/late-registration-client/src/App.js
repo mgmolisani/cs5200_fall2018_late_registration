@@ -14,10 +14,7 @@ class App
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: {
-                _id: 3,
-                userType: 'ADMIN'
-            }
+            currentUser: null
         };
         this.setCurrentUser = this.setCurrentUser.bind(this);
     }

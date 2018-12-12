@@ -8,15 +8,18 @@ export default class LoginCard
     static defaultProps = {};
 
     render() {
-        const {id, username, currentUser, setCurrentUser} = this.props;
+        const {username, password, setCurrentUser} = this.props;
         return (
             <div className='col-md-6 col-lg-4 mb-4 text-center'>
-                <div className={`card ${currentUser._id === id ? 'bg-secondary text-white' : ''}`}
+                <div className='card'
                      onClick={setCurrentUser}>
                     <div className='card-body'>
                         <h3>
-                            {username}
+                            Username: {username}
                         </h3>
+                        <h5>
+                            Password: {password}
+                        </h5>
                     </div>
                 </div>
             </div>
