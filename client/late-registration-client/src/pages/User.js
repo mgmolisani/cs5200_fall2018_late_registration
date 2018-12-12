@@ -38,9 +38,9 @@ export default class User
 
     searchUsers(users) {
         const search = this.state.search.toLowerCase();
-        return users.filter(user => user.username.toLowerCase().includes(search)
-            || user.firstName.toLowerCase().includes(search)
-            || user.lastName.toLowerCase().includes(search));
+        return users.filter(user => (user.username && user.username.toLowerCase().includes(search))
+            || (user.firstName && user.firstName.toLowerCase().includes(search))
+            || (user.lastName && user.lastName.toLowerCase().includes(search)));
     };
 
     createNewUser() {

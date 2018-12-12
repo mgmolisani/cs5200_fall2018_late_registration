@@ -34,9 +34,9 @@ export default class Team
 
     filterTeams(teams) {
         const search = this.state.search.toLowerCase();
-        return teams.filter(team => team.name.toLowerCase().includes(search)
-            || team.mascot.toLowerCase().includes(search)
-            || team.hometown.toLowerCase().includes(search));
+        return teams.filter(team => (team.name && team.name.toLowerCase().includes(search))
+            || (team.mascot && team.mascot.toLowerCase().includes(search))
+            || (team.hometown && team.hometown.toLowerCase().includes(search)));
     }
 
     createNewTeam(coachId) {

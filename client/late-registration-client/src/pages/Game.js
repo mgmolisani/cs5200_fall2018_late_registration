@@ -70,9 +70,9 @@ export default class Game
 
     filterGames(games) {
         const search = this.state.search.toLowerCase();
-        return games.filter(game => game.gameType.toLowerCase().includes(search)
-            || game.location.toLowerCase().includes(search)
-            || game.teams.some(team => team.team.name.toLowerCase().includes(search)));
+        return games.filter(game => (game.gameType && game.gameType.toLowerCase().includes(search))
+            || (game.location && game.location.toLowerCase().includes(search))
+            || (game.teams && game.teams.some(team => team.team.name.toLowerCase().includes(search))));
     }
 
     refreshData() {

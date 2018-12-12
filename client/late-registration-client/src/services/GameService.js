@@ -1,4 +1,4 @@
-const GAME_API_URL = (process.env.MONGODB_URI ? 'https://late-registration-server.herokuapp.com' : 'http://localhost:5000') + '/game';
+const GAME_API_URL = (process.env.HOST ? 'https://late-registration-server.herokuapp.com' : 'http://localhost:5000') + '/game';
 
 export const GameService = {
     findAllGames: () => {

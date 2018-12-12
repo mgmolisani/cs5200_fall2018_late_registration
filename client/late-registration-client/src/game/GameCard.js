@@ -86,7 +86,9 @@ export default class GameCard
                                                       label={'Game Over?'}
                                                       checked={this.props.isOver}
                                                       type={'checkbox'}
-                                                      onChange={this.props.endGame}
+                                                      onChange={teams.length > 0
+                                                          ? this.props.endGame
+                                                          : () => alert('Cannot end a game with no teams.')}
                                                       isEditing={this.state.editMode}
                                                       hidden/>
                                     <DynamicCardField id={id}
