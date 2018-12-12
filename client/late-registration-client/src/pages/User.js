@@ -28,7 +28,7 @@ export default class User
         this.deleteUser = this.deleteUser.bind(this);
         this.refreshData = this.refreshData.bind(this);
         this.rateCoach = this.rateCoach.bind(this);
-        this.endorsePlayer = this.endorsePlayer.bind(this);
+        this.toggleEndorsement = this.toggleEndorsement.bind(this);
     }
 
     handleSearch(search) {
@@ -67,9 +67,16 @@ export default class User
             .then(() => this.refreshData());
     }
 
-    endorsePlayer(endorseeId, endorserId) {
-        UserService.endorsePlayer(endorseeId, endorserId)
-            .then(() => this.refreshData());
+    toggleEndorsement(endorsee, endorser) {
+        if (endorsee.endorsedBy.some(endoId => {
+            return endoId === endorser._id;
+        })) {
+            UserService.unendorsePlayer(endorsee._id, endorser._id)
+                .then(() => this.refreshData());
+        } else {
+            UserService.endorsePlayer(endorsee._id, endorser._id)
+                .then(() => this.refreshData());
+        }
     }
 
     refreshData() {
@@ -100,37 +107,37 @@ export default class User
                                  updateUser={this.updateUser}
                                  deleteUser={this.deleteUser}
                                  rateCoach={this.rateCoach}
-                                 endorsePlayer={this.endorsePlayer}/>
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Players'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'PLAYER'))}
                                  updateUser={this.updateUser}
                                  deleteUser={this.deleteUser}
                                  rateCoach={this.rateCoach}
-                                 endorsePlayer={this.endorsePlayer}/>
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Coaches'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'COACH'))}
                                  updateUser={this.updateUser}
                                  deleteUser={this.deleteUser}
                                  rateCoach={this.rateCoach}
-                                 endorsePlayer={this.endorsePlayer}/>
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Managers'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'MANAGER'))}
                                  updateUser={this.updateUser}
                                  deleteUser={this.deleteUser}
                                  rateCoach={this.rateCoach}
-                                 endorsePlayer={this.endorsePlayer}/>
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'Administrators'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'ADMIN'))}
                                  updateUser={this.updateUser}
                                  deleteUser={this.deleteUser}
                                  rateCoach={this.rateCoach}
-                                 endorsePlayer={this.endorsePlayer}/>
+                                 toggleEndorsement={this.toggleEndorsement}/>
                     <UserSection title={'All Users'}
                                  users={this.searchUsers(this.state.users)}
                                  updateUser={this.updateUser}
                                  deleteUser={this.deleteUser}
                                  rateCoach={this.rateCoach}
-                                 endorsePlayer={this.endorsePlayer}/>
+                                 toggleEndorsement={this.toggleEndorsement}/>
                 </Fragment>}
             </UserContext.Consumer>
         );

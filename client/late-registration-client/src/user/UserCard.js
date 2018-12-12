@@ -161,7 +161,7 @@ export default class UserCard
                                                    return endorserId === currentUser._id;
                                                })}
                                                type={'checkbox'}
-                                               onChange={() => this.props.endorsePlayer(currentUser._id)}/>
+                                               onChange={() => this.props.toggleEndorsement(currentUser)}/>
                                     </div>}
                                     {(
                                         currentUser.userType === 'ADMIN'

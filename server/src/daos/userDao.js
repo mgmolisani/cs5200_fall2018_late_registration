@@ -77,8 +77,10 @@ const unendorsePlayer = (playerEndorsingId, playerBeingEndorsedId) => {
     return userModel.findByIdAndUpdate(
         playerBeingEndorsedId,
         {
-            $pull: {
-                'player.endorsedBy': playerEndorsingId
+            player: {
+                $pullAll: {
+                    endorsedBy: playerEndorsingId
+                }
             }
         },
         {new: true}

@@ -55,5 +55,10 @@ export const UserService = {
         return fetch(USER_API_URL + '/endorsePlayer/' + endorserId + '/' + endorseeId, {
             method: 'PUT',
         })
+    },
+    unendorsePlayer: (endorseeId, endorserId) => {
+        return fetch(USER_API_URL + '/unendorsePlayer/' + endorserId + '/' + endorseeId, {
+            method: 'PUT',
+        })
     }
 };

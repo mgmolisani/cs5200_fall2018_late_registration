@@ -21,7 +21,7 @@ const UserSection = props => {
                                                updateUser={(update) => props.updateUser(user._id, update)}
                                                deleteUser={() => props.deleteUser(user._id)}
                                                rateCoach={rating => props.rateCoach(user._id, rating)}
-                                               endorsePlayer={endorserId => props.endorsePlayer(user._id, endorserId)}/>
+                                               toggleEndorsement={endorser => props.toggleEndorsement(user, endorser)}/>
             )}
         </CardSection>
     );
