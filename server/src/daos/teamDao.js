@@ -1,4 +1,5 @@
 const teamModel = require('../models/Team');
+const userModel = require('../models/User');
 let ObjectId = require('mongodb').ObjectID;
 
 const createTeam = team => {
@@ -79,7 +80,13 @@ const removePostFromTeam = (teamId, postId) => {
 
 const findAllTeams = () => {
   return teamModel.find()
-      .populate('posts')
+      .populate({
+          path: 'posts',
+          populate: {
+              path: 'postedBy',
+              model: userModel
+          }
+      })
       .populate('players')
       .populate('coach')
       .exec();

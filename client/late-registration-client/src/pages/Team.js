@@ -3,6 +3,7 @@ import TeamSection from '../team/TeamSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
 import {TeamService} from '../services/TeamService';
+import {PostService} from '../services/PostService';
 
 export default class Team
     extends Component {
@@ -19,11 +20,12 @@ export default class Team
         };
         this.handleSearch = this.handleSearch.bind(this);
         this.createNewTeam = this.createNewTeam.bind(this);
-        this.createNewTeam = this.createNewTeam.bind(this);
         this.updateTeam = this.updateTeam.bind(this);
         this.deleteTeam = this.deleteTeam.bind(this);
         this.addPlayerToTeam = this.addPlayerToTeam.bind(this);
         this.removePlayerFromTeam = this.removePlayerFromTeam.bind(this);
+        this.addPostToTeam = this.addPostToTeam.bind(this);
+        this.removePostFromTeam = this.removePostFromTeam.bind(this);
     }
 
     handleSearch(search) {
@@ -49,8 +51,8 @@ export default class Team
             .then(() => this.refreshData());
     }
 
-    deleteTeam(userId) {
-        TeamService.deleteTeam(userId)
+    deleteTeam(teamId) {
+        TeamService.deleteTeam(teamId)
             .then(() => this.refreshData());
     }
 
@@ -61,6 +63,21 @@ export default class Team
 
     removePlayerFromTeam(teamId, userId) {
         TeamService.removePlayerFromTeam(teamId, userId)
+            .then(() => this.refreshData());
+    }
+
+    addPostToTeam(teamId, post) {
+        PostService.createPost(post)
+            .then(post => {
+                return TeamService.addPostToTeam(teamId, post._id);
+            })
+            .then(() => this.refreshData());
+        this.setState({post: ''});
+    }
+
+    removePostFromTeam(teamId, postId) {
+        PostService.deletePost(postId)
+            .then(() => TeamService.removePostFromTeam(teamId, postId))
             .then(() => this.refreshData());
     }
 
@@ -87,17 +104,21 @@ export default class Team
                              onClick={() => this.createNewTeam(currentUser._id)}
                              buttonLabel={'Create New Team'}/>
                     <TeamSection title={'My Teams'}
-                                 teams={this.filterTeams(this.state.teams)}
+                                 teams={this.filterTeams(this.state.teams.filter(team => team.coach._id === currentUser._id))}
                                  updateTeam={this.updateTeam}
                                  deleteTeam={this.deleteTeam}
                                  addPlayerToTeam={this.addPlayerToTeam}
-                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
+                                 removePlayerFromTeam={this.removePlayerFromTeam}
+                                 addPostToTeam={this.addPostToTeam}
+                                 removePostFromTeam={this.removePostFromTeam}/>
                     <TeamSection title={'All Teams'}
                                  teams={this.filterTeams(this.state.teams)}
                                  updateTeam={this.updateTeam}
                                  deleteTeam={this.deleteTeam}
                                  addPlayerToTeam={this.addPlayerToTeam}
-                                 removePlayerFromTeam={this.removePlayerFromTeam}/>
+                                 removePlayerFromTeam={this.removePlayerFromTeam}
+                                 addPostToTeam={this.addPostToTeam}
+                                 removePostFromTeam={this.removePostFromTeam}/>
                 </Fragment>}
             </UserContext.Consumer>
         );

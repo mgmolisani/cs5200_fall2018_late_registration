@@ -25,7 +25,6 @@ export default class TeamCard
         this.updateTeam = this.updateTeam.bind(this);
         this.togglePlayerDetails = this.togglePlayerDetails.bind(this);
         this.togglePosts = this.togglePosts.bind(this);
-        this.postContent = this.postContent.bind(this);
     }
 
     handleChange(input, value) {
@@ -51,12 +50,6 @@ export default class TeamCard
 
     togglePosts() {
         this.setState(state => ({showPosts: !state.showPosts}));
-    }
-
-    postContent() {
-        //TODO
-        console.log(this.state.post);
-        this.setState({post: ''});
     }
 
     render() {
@@ -112,15 +105,15 @@ export default class TeamCard
                                                 {players.map(player => <li key={player._id}
                                                                            className='list-group-item'>
                                                     <div className='d-flex justify-content-between align-items-center'>
-                                                    {player.firstName} {player.lastName}
-                                                    {(
-                                                        currentUser._id === coach._id
-                                                        || currentUser.userType === 'ADMIN'
-                                                    )
-                                                    && <button className='btn btn-danger btn-sm my-3'
-                                                               onClick={() => this.props.removePlayerFromTeam(player._id)}>
-                                                        X
-                                                    </button>}
+                                                        {player.firstName} {player.lastName}
+                                                        {(
+                                                            currentUser._id === coach._id
+                                                            || currentUser.userType === 'ADMIN'
+                                                        )
+                                                        && <button className='btn btn-danger btn-sm my-3'
+                                                                   onClick={() => this.props.removePlayerFromTeam(player._id)}>
+                                                            X
+                                                        </button>}
                                                     </div>
                                                 </li>)}
                                             </ul>
@@ -155,7 +148,8 @@ export default class TeamCard
                                                             || currentUser._id === coach._id
                                                             || currentUser._id === post.postedBy._id
                                                         )
-                                                        && <button className='btn btn-danger btn-sm mx-auto my-3'>
+                                                        && <button className='btn btn-danger btn-sm mx-auto my-3'
+                                                                   onClick={() => this.props.removePostFromTeam(post._id)}>
                                                             X
                                                         </button>
                                                     }
@@ -182,7 +176,10 @@ export default class TeamCard
                                                   onChange={event => this.handleChange('post', event.target.value)}/>
                                     </div>
                                     <button className='btn btn-dark btn-block'
-                                            onClick={this.postContent}>
+                                            onClick={() => this.props.addPostToTeam({
+                                                content: this.state.post,
+                                                postedBy: currentUser._id
+                                            })}>
                                         Post
                                     </button>
                                     {

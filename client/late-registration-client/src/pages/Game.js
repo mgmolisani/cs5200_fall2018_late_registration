@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import GameSection from '../game/GameSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
+import {GameService} from '../services/GameService';
 
 export default class Game
     extends Component {
@@ -13,12 +14,54 @@ export default class Game
     constructor(props) {
         super(props);
         this.state = {
-            myGames: [],
-            allGames: [],
+            games: [],
             search: ''
         };
         this.handleSearch = this.handleSearch.bind(this);
         this.createNewGame = this.createNewGame.bind(this);
+        this.updateGame = this.updateGame.bind(this);
+        this.deleteGame = this.deleteGame.bind(this);
+        this.addTeamToGameByTeamName = this.addTeamToGameByTeamName.bind(this);
+        this.removeTeamFromGame = this.removeTeamFromGame.bind(this);
+        this.updateScore = this.updateScore.bind(this);
+        this.endGame = this.endGame.bind(this);
+    }
+
+    createNewGame(managerId) {
+        GameService.createGame({
+            gameType: 'Football',
+            manager: managerId
+        }).then(() => this.refreshData());
+    }
+
+    updateGame(gameId, game) {
+        GameService.updateGame(gameId, game)
+            .then(() => this.refreshData());
+    }
+
+    deleteGame(gameId) {
+        GameService.deleteGame(gameId)
+            .then(() => this.refreshData());
+    }
+
+    addTeamToGameByTeamName(gameId, teamName) {
+        GameService.addTeamToGameByTeamName(gameId, teamName)
+            .then(() => this.refreshData());
+    }
+
+    removeTeamFromGame(gameId, teamId) {
+        GameService.removeTeamFromGame(gameId, teamId)
+            .then(() => this.refreshData());
+    }
+
+    updateScore(gameId, teamId, score) {
+        GameService.updateScore(gameId, teamId, score)
+            .then(() => this.refreshData());
+    }
+
+    endGame(gameId) {
+        GameService.endGame(gameId)
+            .then(() => this.refreshData());
     }
 
     handleSearch(search) {
@@ -32,89 +75,46 @@ export default class Game
             || game.teams.some(team => team.team.name.toLowerCase().includes(search)));
     }
 
-    createNewGame() {
-        //TODO
+    refreshData() {
+        return GameService.findAllGames()
+            .then(games => {
+                this.setState({
+                    games: games
+                });
+            });
     }
 
     componentDidMount() {
-        const games = [{
-            _id: 1,
-            gameType: 'Football',
-            start: '2018-12-12',
-            location: 'My house',
-            isOver: true,
-            manager: {
-                _id: 3,
-                firstName: 'Dick',
-                lastName: 'Help'
-            },
-            teams: [
-                {
-                    team: {
-                        _id: 1,
-                        name: 'Rogue Nation',
-                        logo: 'https://images-platform.99static.com/BYBl73kycvZMCvyWN6v7Ssm4c_U=/420x0:1502x1082/fit-in/900x675/99designs-contests-attachments/80/80458/attachment_80458293',
-                        mascot: 'Rogue',
-                        hometown: 'Boston, MA',
-                        coach: {
-                            firstName: 'Bobby',
-                            lastName: 'Boy'
-                        },
-                        players: [
-                            {
-                                _id: 1,
-                                firstName: 'Mike',
-                                lastName: 'Molisani'
-                            }
-                        ]
-                    },
-                    score: 100
-                },
-                {
-                    team: {
-                        _id: 2,
-                        name: 'Rogie Nation',
-                        logo: 'https://images-platform.99static.com/BYBl73kycvZMCvyWN6v7Ssm4c_U=/420x0:1502x1082/fit-in/900x675/99designs-contests-attachments/80/80458/attachment_80458293',
-                        mascot: 'Rogue',
-                        hometown: 'Boston, MA',
-                        coach: {
-                            firstName: 'Bobby',
-                            lastName: 'Boy'
-                        },
-                        players: [
-                            {
-                                _id: 1,
-                                firstName: 'Mike',
-                                lastName: 'Molisani'
-                            }
-                        ]
-                    },
-                    score: 99
-                }
-            ]
-        }];
-        this.setState({
-            myGames: games,
-            allGames: games
-        });
+        this.refreshData();
     }
 
     render() {
         return (
-            <Fragment>
-                <UserContext.Consumer>
-                    {({currentUser}) => <Omnibar value={this.state.search}
-                                                 onChange={event => this.handleSearch(event.target.value)}
-                                                 showButton={currentUser.userType === 'MANAGER'}
-                                                 onClick={this.createNewGame}
-                                                 buttonLabel={'Create New Game'}/>
-                    }
-                </UserContext.Consumer>
-                <GameSection title={'My Games'}
-                             games={this.filterGames(this.state.myGames)}/>
-                <GameSection title={'All Games'}
-                             games={this.filterGames(this.state.allGames)}/>
-            </Fragment>
+            <UserContext.Consumer>
+                {({currentUser}) => <Fragment>
+                    <Omnibar value={this.state.search}
+                             onChange={event => this.handleSearch(event.target.value)}
+                             showButton={currentUser.userType === 'MANAGER'}
+                             onClick={() => this.createNewGame(currentUser._id)}
+                             buttonLabel={'Create New Game'}/>
+                    <GameSection title={'My Games'}
+                                 games={this.filterGames(this.state.games.filter(game => game.manager._id === currentUser._id))}
+                                 updateGame={this.updateGame}
+                                 deleteGame={this.deleteGame}
+                                 addTeamToGameByTeamName={this.addTeamToGameByTeamName}
+                                 removeTeamFromGame={this.removeTeamFromGame}
+                                 updateScore={this.updateScore}
+                                 endGame={this.endGame}/>
+                    <GameSection title={'All Games'}
+                                 games={this.filterGames(this.state.games)}
+                                 updateGame={this.updateGame}
+                                 deleteGame={this.deleteGame}
+                                 addTeamToGameByTeamName={this.addTeamToGameByTeamName}
+                                 removeTeamFromGame={this.removeTeamFromGame}
+                                 updateScore={this.updateScore}
+                                 endGame={this.endGame}/>
+                </Fragment>}
+            </UserContext.Consumer>
         );
     }
 }

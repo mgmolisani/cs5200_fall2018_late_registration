@@ -14,7 +14,10 @@ const deleteGame = id => {
 };
 
 const findAllGames = () => {
-  return gameModel.find().exec();
+  return gameModel.find()
+      .populate('manager')
+      .populate('teams.team')
+      .exec();
 };
 
 const findAllGamesByType = gameType => {

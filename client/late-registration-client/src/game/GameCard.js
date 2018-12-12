@@ -21,34 +21,29 @@ export default class GameCard
             showPlayerDetails: false
         };
         this.handleChange = this.handleChange.bind(this);
-        this.toggleEditMode = this.toggleEditMode.bind(this);
+        this.updateGame = this.updateGame.bind(this);
         this.addTeam = this.addTeam.bind(this);
-        this.removeTeam = this.removeTeam.bind(this);
-        this.updateScore = this.updateScore.bind(this);
     }
 
     handleChange(input, value) {
         this.setState({[input]: value});
     }
 
-    toggleEditMode() {
+    updateGame() {
+        if (this.state.editMode) {
+            this.props.updateGame({
+                ...this.props.game,
+                start: this.state.start || this.props.start,
+                location: this.state.location || this.props.location,
+                gameType: this.state.gameType || this.props.gameType
+            });
+        }
         this.setState(state => ({editMode: !state.editMode}));
     }
 
     addTeam() {
-        //TODO check first that its not already there
-        console.log(this.state.team);
+        this.props.addTeamToGameByTeamName(this.state.team);
         this.setState({team: ''});
-    }
-
-    removeTeam(teamId) {
-        //TODO
-        console.log(teamId);
-    }
-
-    updateScore(teamId, score) {
-        //TODO
-        console.log(teamId + ' ' + score);
     }
 
     displayWinner() {
@@ -89,9 +84,9 @@ export default class GameCard
                                                       isEditing={this.state.editMode}/>
                                     <DynamicCardField id={id}
                                                       label={'Game Over?'}
-                                                      checked={this.state.isOver !== null ? this.state.isOver : isOver}
+                                                      checked={this.props.isOver}
                                                       type={'checkbox'}
-                                                      onChange={event => this.handleChange('isOver', event.target.checked)}
+                                                      onChange={this.props.endGame}
                                                       isEditing={this.state.editMode}
                                                       hidden/>
                                     <DynamicCardField id={id}
@@ -125,11 +120,11 @@ export default class GameCard
                                                             )
                                                             && <div className='btn-group-vertical col-auto'>
                                                                 <button className='btn btn-success'
-                                                                        onClick={() => this.updateScore(team.team._id, team.score + 1)}>
+                                                                        onClick={() => this.props.updateScore(team.team._id, team.score + 1)}>
                                                                     +
                                                                 </button>
                                                                 <button className='btn btn-danger'
-                                                                        onClick={() => this.updateScore(team.team._id, team.score - 1)}>
+                                                                        onClick={() => this.props.updateScore(team.team._id, team.score - 1)}>
                                                                     -
                                                                 </button>
                                                             </div>
@@ -168,10 +163,11 @@ export default class GameCard
                                         || currentUser._id === manager._id
                                             ? <Fragment>
                                                 <button className='btn btn-secondary btn-block'
-                                                        onClick={this.toggleEditMode}>
+                                                        onClick={this.updateGame}>
                                                     {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
                                                 </button>
-                                                <button className='btn btn-danger btn-block'>
+                                                <button className='btn btn-danger btn-block'
+                                                        onClick={this.props.deleteGame}>
                                                     Delete
                                                 </button>
                                             </Fragment>
