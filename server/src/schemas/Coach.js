@@ -6,5 +6,8 @@ module.exports = new Schema({
         min: 1,
         max: 5
     }],
-    yearsExperience: Number
+    yearsExperience: {
+        type: Number,
+        default: 0
+    }
 });

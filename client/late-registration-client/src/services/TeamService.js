@@ -1,17 +1,19 @@
-//const USER_API_URL = 'https://late-registration-server.herokuapp.com/user/';
-const USER_API_URL = 'http://localhost:5000/user';
+//const TEAM_API_URL = 'https://late-registration-server.herokuapp.com/team';
+import Team from '../pages/Team';
 
-export const UserService = {
-    findAllUsers: () => {
-        return fetch(USER_API_URL + '/getAllUsers')
+const TEAM_API_URL = 'http://localhost:5000/team';
+
+export const TeamService = {
+    findAllTeams: () => {
+        return fetch(TEAM_API_URL + '/getAllTeams')
             .then(function (response) {
                 return response.json();
             });
     },
-    findUserByCredentials: (credentials) => {
-        return fetch(USER_API_URL + '/getUserByCredentials', {
+    findTeamByName: (name) => {
+        return fetch(TEAM_API_URL + '/getUserByCredentials', {
             method: 'POST',
-            body: JSON.stringify(credentials),
+            body: JSON.stringify(name),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -19,10 +21,10 @@ export const UserService = {
             return response.json();
         });
     },
-    createUser: user => {
-        return fetch(USER_API_URL + '/createUser', {
+    createTeam: team => {
+        return fetch(TEAM_API_URL + '/createTeam', {
             method: 'POST',
-            body: JSON.stringify(user),
+            body: JSON.stringify(team),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -30,15 +32,15 @@ export const UserService = {
             return response.json();
         });
     },
-    deleteUser: userId => {
-        return fetch(USER_API_URL + '/deleteUserById/' + userId, {
+    deleteTeam: teamId => {
+        return fetch(TEAM_API_URL + '/deleteTeamById/' + teamId, {
             method: 'DELETE'
         });
     },
-    updateUser: (userId, user) => {
-        return fetch(USER_API_URL + '/updateUser/' + userId, {
+    updateTeam: (userId, team) => {
+        return fetch(TEAM_API_URL + '/updateTeam/' + userId, {
             method: 'PUT',
-            body: JSON.stringify(user),
+            body: JSON.stringify(team),
             headers: {
                 'Content-Type': 'application/json'
             }

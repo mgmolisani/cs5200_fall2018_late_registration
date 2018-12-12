@@ -15,7 +15,8 @@ const DynamicCardField = props => {
                                  id={fieldId}
                                  type={type || 'text'}
                                  checked={checked}
-                                 value={value || defaultValue}
+                                 value={value}
+                                 placeholder={defaultValue}
                                  onChange={onChange}/>
                         : <h5>
                             {defaultValue}

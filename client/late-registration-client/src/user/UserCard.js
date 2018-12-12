@@ -34,15 +34,16 @@ export default class UserCard
 
     updateUser() {
         if (this.state.editMode) {
-            this.props.updateUser({
+            const user = {
                 ...this.props.user,
                 username: this.state.username || this.props.username,
                 firstName: this.state.firstName || this.props.firstName,
                 lastName: this.state.lastName || this.props.lastName,
                 userType: this.state.userType || this.props.userType,
-                yearsExperience: this.state.yearsExperience || this.props.yearsExperience,
+                yearsExperience: this.state.yearsExperience ? parseInt(this.state.yearsExperience, 10) : parseInt(this.props.yearsExperience, 10),
                 hiredOn: this.state.hiredOn || this.props.hiredOn
-            });
+            };
+            this.props.updateUser(user);
         }
         this.setState(state => ({editMode: !state.editMode}));
     }
@@ -140,6 +141,7 @@ export default class UserCard
                                                          onChange={event => this.handleChange('hiredOn', event.target.value)}
                                                          isEditing={this.state.editMode}/>}
                                     {userType === 'COACH'
+                                    && !isNaN(rating)
                                     && <DynamicCardField id={id}
                                                          label={'Rating'}
                                                          defaultValue={rating}/>}
@@ -175,7 +177,7 @@ export default class UserCard
                                     </div>}
                                     {(
                                         currentUser.userType === 'ADMIN'
-                                        && currentUser._id !== id
+                                        || currentUser._id === id
                                     )
                                     && <Fragment>
                                         <button className='btn btn-secondary btn-block'

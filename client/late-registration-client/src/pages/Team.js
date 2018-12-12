@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import TeamSection from '../team/TeamSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
+import {TeamService} from '../services/TeamService';
 
 export default class Team
     extends Component {
@@ -13,12 +14,14 @@ export default class Team
     constructor(props) {
         super(props);
         this.state = {
-            myTeams: [],
-            allTeams: [],
+            teams: [],
             search: ''
         };
         this.handleSearch = this.handleSearch.bind(this);
         this.createNewTeam = this.createNewTeam.bind(this);
+        this.createNewTeam = this.createNewTeam.bind(this);
+        this.updateTeam = this.updateTeam.bind(this);
+        this.deleteTeam = this.deleteTeam.bind(this);
     }
 
     handleSearch(search) {
@@ -32,97 +35,55 @@ export default class Team
             || team.hometown.toLowerCase().includes(search));
     }
 
-    componentDidMount() {
-        const teams = [{
-            _id: 1,
-            name: 'Rogue Nation',
-            logo: 'https://images-platform.99static.com/BYBl73kycvZMCvyWN6v7Ssm4c_U=/420x0:1502x1082/fit-in/900x675/99designs-contests-attachments/80/80458/attachment_80458293',
-            mascot: 'Rogue',
-            hometown: 'Boston, MA',
-            coach: {
-                _id: 2,
-                firstName: 'Bobby',
-                lastName: 'Boy'
-            },
-            players: [
-                {
-                    _id: 1,
-                    firstName: 'Mike',
-                    lastName: 'Molisani'
-                }
-            ],
-            posts: [
-                {
-                    _id: 1,
-                    content: 'Hello there',
-                    created: '2011-10-10',
-                    postedBy: {
-                        _id: 1,
-                        username: 'mmmm',
-                        firstName: 'Mike',
-                        lastName: 'Molisani'
-                    }
-                },
-                {
-                    _id: 2,
-                    content: 'Hello there Hello there Hello there Hello there Hello there Hello there Hello there' +
-                        ' Hello there Hello there Hello there',
-                    created: '2011-10-10',
-                    postedBy: {
-                        _id: 1,
-                        username: 'mmmm',
-                        firstName: 'Mike',
-                        lastName: 'Molisani'
-                    }
-                }
-            ]
-        },
-            {
-                _id: 2,
-                name: 'Rogue Nation',
-                logo: 'https://images-platform.99static.com/BYBl73kycvZMCvyWN6v7Ssm4c_U=/420x0:1502x1082/fit-in/900x675/99designs-contests-attachments/80/80458/attachment_80458293',
-                mascot: 'Rogue',
-                hometown: 'Boston, MA',
-                coach: {
-                    _id: 2,
-                    firstName: 'Bobby',
-                    lastName: 'Boy'
-                },
-                players: [
-                    {
-                        _id: 5,
-                        firstName: 'Mike',
-                        lastName: 'Molisani'
-                    }
-                ],
-                posts: []
-            }];
-        this.setState({
-            myTeams: teams,
-            allTeams: teams
-        });
+    createNewTeam(coachId) {
+        TeamService.createTeam({
+            name: 'new team',
+            coach: coachId
+        }).then(() => this.refreshData());
     }
 
-    createNewTeam() {
-        //TODO
+    updateTeam(teamId, team) {
+        TeamService.updateTeam(teamId, team)
+            .then(() => this.refreshData());
+    }
+
+    deleteTeam(userId) {
+        TeamService.deleteTeam(userId)
+            .then(() => this.refreshData());
+    }
+
+    refreshData() {
+        return TeamService.findAllTeams()
+            .then(teams => {
+                this.setState({
+                    teams: teams
+                });
+            });
+    }
+
+    componentDidMount() {
+        this.refreshData();
     }
 
     render() {
         return (
-            <Fragment>
-                <UserContext.Consumer>
-                    {({currentUser}) => <Omnibar value={this.state.search}
-                                                 onChange={event => this.handleSearch(event.target.value)}
-                                                 showButton={currentUser.userType === 'COACH'}
-                                                 onClick={this.createNewTeam}
-                                                 buttonLabel={'Create New Team'}/>
-                    }
-                </UserContext.Consumer>
-                <TeamSection title={'My Teams'}
-                             teams={this.filterTeams(this.state.myTeams)}/>
-                <TeamSection title={'All Teams'}
-                             teams={this.filterTeams(this.state.allTeams)}/>
-            </Fragment>
+            <UserContext.Consumer>
+                {({currentUser}) => <Fragment>
+                        <Omnibar value={this.state.search}
+                                 onChange={event => this.handleSearch(event.target.value)}
+                                 showButton={currentUser.userType === 'COACH'}
+                                 onClick={() => this.createNewTeam(currentUser._id)}
+                                 buttonLabel={'Create New Team'}/>
+                        <TeamSection title={'My Teams'}
+                                     teams={this.filterTeams(this.state.teams)}
+                                     updateTeam={this.updateTeam}
+                                     deleteTeam={this.deleteTeam}/>
+                        <TeamSection title={'All Teams'}
+                                     teams={this.filterTeams(this.state.teams)}
+                                     updateTeam={this.updateTeam}
+                                     deleteTeam={this.deleteTeam}/>
+                    </Fragment>}
+            </UserContext.Consumer>
         );
     }
 }

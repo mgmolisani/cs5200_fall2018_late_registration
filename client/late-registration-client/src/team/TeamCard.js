@@ -22,7 +22,7 @@ export default class TeamCard
             post: ''
         };
         this.handleChange = this.handleChange.bind(this);
-        this.toggleEditMode = this.toggleEditMode.bind(this);
+        this.updateTeam = this.updateTeam.bind(this);
         this.togglePlayerDetails = this.togglePlayerDetails.bind(this);
         this.togglePosts = this.togglePosts.bind(this);
         this.joinTeam = this.joinTeam.bind(this);
@@ -34,7 +34,18 @@ export default class TeamCard
         this.setState({[input]: value});
     }
 
-    toggleEditMode() {
+    updateTeam() {
+        if (this.state.editMode) {
+            this.props.updateUser({
+                ...this.props.team,
+                username: this.state.username || this.props.username,
+                firstName: this.state.firstName || this.props.firstName,
+                lastName: this.state.lastName || this.props.lastName,
+                userType: this.state.userType || this.props.userType,
+                yearsExperience: this.state.yearsExperience || this.props.yearsExperience,
+                hiredOn: this.state.hiredOn || this.props.hiredOn
+            });
+        }
         this.setState(state => ({editMode: !state.editMode}));
     }
 
@@ -199,10 +210,11 @@ export default class TeamCard
                                         )
                                         && <Fragment>
                                             <button className='btn btn-secondary btn-block'
-                                                    onClick={this.toggleEditMode}>
+                                                    onClick={this.updateTeam}>
                                                 {this.state.editMode ? 'Update' : 'Enter Edit Mode'}
                                             </button>
-                                            <button className='btn btn-danger btn-block'>
+                                            <button className='btn btn-danger btn-block'
+                                                    onClick={this.props.deleteTeam}>
                                                 Delete
                                             </button>
                                         </Fragment>
