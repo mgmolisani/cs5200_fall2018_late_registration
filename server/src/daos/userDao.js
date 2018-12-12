@@ -35,6 +35,45 @@ const getTeamsForUser = id => {
   })
 }
 
+const addCoachRating = (userId, rating) => {
+  return userModel.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          "coach.ratings": rating
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
+const updateYearsExperience = (userId, yearsExperience) => {
+  return userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          coach: {
+            yearsExperience: yearsExperience
+          }
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
+const endorsePlayer = (playerEndorsingId, playerBeingEndorsedId) => {
+  return userModel.findByIdAndUpdate(
+      playerBeingEndorsedId,
+      {
+        push: {
+          endorsedBy: playerEndorsingId
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
+
 const flattenUser = (user) => {
 
   let newUser = JSON.parse(JSON.stringify(user));
@@ -67,5 +106,9 @@ module.exports = {
   findUserById,
   findUserByCredentials,
   getTeamsForUser,
-  flattenUser
+  flattenUser,
+  addCoachRating,
+  updateYearsExperience,
+  endorsePlayer
+
 };
