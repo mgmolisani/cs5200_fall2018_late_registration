@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var userDao = require('../../daos/userDao');
 var teamDao = require('../../daos/teamDao');
+var postDao = require('../../daos/postDao');
 
 router.get('/', function (req, res, next) {
   res.send('Welcome to the user router.')
@@ -111,14 +112,30 @@ router.put('/updateYearsExperience/:coachId/:yearsExperience', function (req, re
 
 router.delete('/deleteUserById/:id', function (req, res, next) {
   let id = req.params.id;
-  return userDao.deleteUser(id)
+  return teamDao.findAllTeamsForPlayer(id)
+  .then( teams => {
+    for (team in teams) {
+      let team_id = team._id;
+      teamDao.removePlayerFromTeam(team_id, id)
+    }
+
+    return postDao.findAllPostsForPlayer(id)
+  })
+  .then( posts => {
+    for (post in posts) {
+      let post_id = post._id;
+      postDao.deletePost(post_id);
+    }
+  })
+  .then( () => {
+    return userDao.deleteUser(id)
+  })
   .then( result => {
     res.send(result);
     return result;
   })
   .catch(next);
 });
-
 
 const unflattenUser = (user) => {
 
