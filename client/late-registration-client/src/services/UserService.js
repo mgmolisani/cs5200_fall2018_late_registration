@@ -8,6 +8,17 @@ export const UserService = {
                 return response.json();
             });
     },
+    findUserByCredentials: (credentials) => {
+        return fetch(USER_API_URL + '/getUserByCredentials', {
+            method: 'POST',
+            body: JSON.stringify(credentials),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+        });
+    },
     createUser: user => {
         return fetch(USER_API_URL + '/createUser', {
             method: 'POST',
