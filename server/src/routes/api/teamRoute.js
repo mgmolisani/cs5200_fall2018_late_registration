@@ -24,6 +24,17 @@ router.get('/getTeamById/:id', function (req, res, next) {
   .catch(next);
 });
 
+
+router.get('/getTeamByName/:name', function (req, res, next) {
+  // res.send('Welcome to the Team router.')
+  return teamDao.getTeamByName(req.params.name)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
 router.post('/createTeam', function (req, res, next) {
   let team = req.body;
   return teamDao.createTeam(team)
@@ -61,6 +72,39 @@ router.put('/removePlayerFromTeam/:teamId/:playerId', function (req, res, next) 
   let teamId = req.params.teamId;
   let playerId = req.params.playerId;
   return teamDao.removePlayerFromTeam(teamId, playerId)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
+router.put('/addPostToTeam/:teamId/:postId', function (req, res, next) {
+  let teamId = req.params.teamId;
+  let postId = req.params.postId;
+  return teamDao.addPostToTeam(teamId, postId)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
+router.put('/removePostFromTeam/:teamId/:postId', function (req, res, next) {
+  let teamId = req.params.teamId;
+  let postId = req.params.postId;
+  return teamDao.removePostFromTeam(teamId, postId)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
+router.put('/updateScore/:teamId/:score', function (req, res, next) {
+  let teamId = req.params.teamId;
+  let score = req.params.score;
+  return teamDao.updateScore(teamId, score)
   .then( result => {
     res.send(result);
     return result;
