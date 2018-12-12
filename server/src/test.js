@@ -30,8 +30,7 @@ populateDatabase = () => {
     password: "alice",
     userType: "PLAYER",
     player: {
-      teams: [],
-      endorsedBy: []
+
     }
   };
 
@@ -132,10 +131,10 @@ populateDatabase = () => {
 
     updates = []
 
-    updates.push(teamDao.addPlayerToTeam(alice_obj._id, patriots_obj._id));
-    updates.push(teamDao.addPlayerToTeam(bob_obj._id, celtics_obj._id));
-    updates.push(teamDao.addPlayerToTeam(bob_obj._id, redsox_obj._id));
-    updates.push(teamDao.addPlayerToTeam(echo_obj._id, patriots_obj._id));
+    updates.push(teamDao.addPlayerToTeam(patriots_obj._id, alice_obj._id));
+    updates.push(teamDao.addPlayerToTeam(celtics_obj._id, alice_obj._id));
+    updates.push(teamDao.addPlayerToTeam(redsox_obj._id, echo_obj._id));
+    updates.push(teamDao.addPlayerToTeam(patriots_obj._id, echo_obj._id));
 
     updates.push(teamDao.updateCoach(celtics_obj._id, dan_obj._id));
     updates.push(teamDao.updateCoach(redsox_obj._id, charlie_obj._id));
