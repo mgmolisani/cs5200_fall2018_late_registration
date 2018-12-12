@@ -59,6 +59,43 @@ router.put('/updateUser/:id', function (req, res, next) {
   .catch(next);
 });
 
+router.put('/endorsePlayer/:playerEndorsingId/:playerBeingEndorsedId', function (req, res, next) {
+  let playerEndorsingId = req.params.playerEndorsingId;
+  let playerBeingEndorsedId = req.params.playerBeingEndorsedId;
+  return userDao.endorsePlayer(playerEndorsingId, playerBeingEndorsedId)
+  .then(result => {
+    res.send(result);
+    return result;
+
+  })
+  .catch(next);
+});
+
+
+router.put('/addCoachRating/:coachId/:rating', function (req, res, next) {
+  let coachId = req.params.coachId;
+  let rating = req.params.rating;
+  return userDao.addCoachRating(coachId, rating)
+  .then(result => {
+    res.send(result);
+    return result;
+
+  })
+  .catch(next);
+});
+
+router.put('/updateYearsExperience/:coachId/:yearsExperience', function (req, res, next) {
+  let coachId = req.params.coachId;
+  let yearsExperience = req.params.yearsExperience;
+  return userDao.updateYearsExperience(coachId, yearsExperience)
+  .then(result => {
+    res.send(result);
+    return result;
+
+  })
+  .catch(next);
+});
+
 router.delete('/deleteUserById/:id', function (req, res, next) {
   let id = req.params.id;
   return userDao.deleteUser(id)
@@ -69,6 +106,23 @@ router.delete('/deleteUserById/:id', function (req, res, next) {
   .catch(next);
 });
 
+
+const unflattenUser = (user) => {
+
+  let newUser = {
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    coach: {
+      yearsExperience: user.yearsExperience
+    },
+    manager: {
+      hiredOn: user.hiredOn
+    }
+  };
+
+  return newUser;
+};
 
 const flattenUser = (user) => {
 
