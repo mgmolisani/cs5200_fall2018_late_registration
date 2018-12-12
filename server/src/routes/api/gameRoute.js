@@ -55,6 +55,18 @@ router.put('/addTeamToGame/:gameId/:teamId', function (req, res, next) {
   .catch(next);
 });
 
+
+router.put('/addTeamToGame/:g/:teamId', function (req, res, next) {
+  let gameId = req.params.gameId;
+  let teamId = req.params.teamId;
+  return gameDao.addTeamToGame(gameId, teamId)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
+
 router.put('/removeTeamFromGame/:gameId/:teamId', function (req, res, next) {
   let gameId = req.params.gameId;
   let teamId = req.params.teamId;
@@ -66,6 +78,18 @@ router.put('/removeTeamFromGame/:gameId/:teamId', function (req, res, next) {
   .catch(next);
 });
 
+
+router.put('/updateScore/:gameId/:teamId/:score', function (req, res, next) {
+  let gameId = req.params.gameId;
+  let teamId = req.params.teamId;
+  let score = req.params.score;
+  return gameDao.updateTeamScore(gameId, teamId, score)
+  .then( result => {
+    res.send(result);
+    return result;
+  })
+  .catch(next);
+});
 
 router.delete('/deleteGameById/:id', function (req, res, next) {
   let id = req.params.id;

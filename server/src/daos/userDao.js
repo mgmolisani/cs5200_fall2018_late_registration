@@ -9,7 +9,7 @@ const updateUser = (id, user) => {
 };
 
 const deleteUser = id => {
-  return userModel.findByIdAndDelete(id).exec();
+  return userModel.findByIdAndDelete(id).exec()
 };
 
 const findAllUsers = () => {
@@ -65,8 +65,8 @@ const endorsePlayer = (playerEndorsingId, playerBeingEndorsedId) => {
   return userModel.findByIdAndUpdate(
       playerBeingEndorsedId,
       {
-        push: {
-          endorsedBy: playerEndorsingId
+        $push: {
+          "player.endorsedBy": playerEndorsingId
         }
       },
       {new: true}

@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var userDao = require('../../daos/userDao');
+var teamDao = require('../../daos/teamDao');
 
 router.get('/', function (req, res, next) {
   res.send('Welcome to the user router.')
@@ -127,6 +128,10 @@ const unflattenUser = (user) => {
 const flattenUser = (user) => {
 
     let newUser = JSON.parse(JSON.stringify(user));
+
+    if (user === null ) {
+      return;
+    }
 
     switch (user.userType) {
         case "PLAYER":
