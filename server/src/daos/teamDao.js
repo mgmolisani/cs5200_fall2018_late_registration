@@ -61,6 +61,30 @@ const removePlayerFromTeam = (teamId, playerId) => {
   ).exec();
 };
 
+const addPostToTeam = (teamId, postId) => {
+  return teamModel.findByIdAndUpdate(
+      teamId,
+      {
+        $push: {
+          posts: postId
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
+const removePostFromTeam = (teamId, postId) => {
+  return teamModel.findByIdAndUpdate(
+      teamId,
+      {
+        pull: {
+          posts: postId
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
 const findAllTeams = () => {
   return teamModel.find()
       .populate('posts')
@@ -83,5 +107,7 @@ module.exports = {
   removePlayerFromTeam,
   updateCoach,
   getTeamByName,
-  updateScore
+  updateScore,
+  addPostToTeam,
+  removePostFromTeam
 };
