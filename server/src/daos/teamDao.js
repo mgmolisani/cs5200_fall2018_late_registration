@@ -31,15 +31,6 @@ const deleteTeam = id => {
   return teamModel.findByIdAndDelete(id).exec();
 };
 
-const updateCoach = (teamId, coachId) => {
-  return findTeamById(teamId)
-  .then(result => {
-    let clone = JSON.parse(JSON.stringify(result));
-    f
-    clone.coach = coachId;
-  })
-};
-
 const addPlayerToTeam = (teamId, playerId) => {
   return teamModel.findByIdAndUpdate(
       teamId,

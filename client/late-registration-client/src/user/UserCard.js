@@ -105,6 +105,7 @@ export default class UserCard
                                             this.state.editMode
                                                 ? <select className='form-control'
                                                           id={id + '_User Type'}
+                                                          value={this.state.userType || userType}
                                                           onChange={event => this.handleChange('userType', event.target.value)}>
                                                     <option value={'PLAYER'}>
                                                         Player
