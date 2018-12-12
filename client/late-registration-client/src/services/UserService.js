@@ -1,10 +1,9 @@
-import User from '../pages/User';
-
-const USER_API_URL = 'https://late-registration-server.herokuapp.com/user/';
+//const USER_API_URL = 'https://late-registration-server.herokuapp.com/user/';
+const USER_API_URL = 'http://localhost:5000/user';
 
 export const UserService = {
     findAllUsers: () => {
-        return fetch(USER_API_URL + 'getAllUsers')
+        return fetch(USER_API_URL + '/getAllUsers')
             .then(function (response) {
                 return response.json();
             });
@@ -16,12 +15,14 @@ export const UserService = {
             headers: {
                 'Content-Type': 'application/json'
             }
+        }).then(function (response) {
+            return response.json();
         });
     },
     deleteUser: userId => {
         return fetch(USER_API_URL + '/deleteUserById/' + userId, {
             method: 'DELETE'
-        })
+        });
     },
     updateUser: (userId, user) => {
         return fetch(USER_API_URL + '/updateUser/' + userId, {
@@ -30,6 +31,6 @@ export const UserService = {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
     }
 };

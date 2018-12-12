@@ -52,9 +52,9 @@ export default class Home
                                   users={Home.users}/>
                     <h2 className='text-center'>
                         {currentUser
-                            ? `You are currently imitating ${currentUser.firstName} ${currentUser.lastName}`
+                            ? `You are currently imitating ${currentUser.username}.`
                             : 'Select a user to log in as from the selections above or make a new user below and' +
-                            ' automatically be logged in as the new user'
+                            ' automatically be logged in as the new user.'
                         }
                     </h2>
                     <DynamicCardField id={'username'}
@@ -93,7 +93,7 @@ export default class Home
                     </div>
                     <button className='btn btn-block btn-dark'
                             onClick={() => UserService.createUser(this.state)
-                                .then(user => {console.log(user); return setCurrentUser(user)})}>
+                                .then(user => setCurrentUser(user))}>
                         Login New User
                     </button>
                 </Fragment>}
