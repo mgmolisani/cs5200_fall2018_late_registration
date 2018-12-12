@@ -13,7 +13,8 @@ module.exports = new Schema({
         enum: [
             'PLAYER',
             'COACH',
-            'MANAGER'
+            'MANAGER',
+            'ADMIN'
         ]
     },
 

@@ -7,13 +7,8 @@ router.get('/', function (req, res, next) {
 
 router.get('/getAllUsers', function (req, res, next) {
   return userDao.findAllUsers()
-  .then(result => {
-    var new_arr = [];
-    for (let i in result) {
-      // var temp = {};
-      let temp = userDao.flattenUser(result[i]);
-      new_arr.push(temp);
-    }
+  .then(function(result) {
+    const new_arr = result.map(user => flattenUser(user));
     res.send(new_arr);
     return new_arr
   })
@@ -23,7 +18,7 @@ router.get('/getAllUsers', function (req, res, next) {
 router.get('/getUserById/:id', function (req, res, next) {
   return userDao.findUserById(req.params.id)
   .then(result => {
-    let flatUser = userDao.flattenUser(result);
+    let flatUser = flattenUser(result);
     res.send(flatUser)
     return flatUser;
   })
@@ -128,4 +123,29 @@ const unflattenUser = (user) => {
 
   return newUser;
 };
+
+const flattenUser = (user) => {
+
+    let newUser = JSON.parse(JSON.stringify(user));
+
+    switch (user.userType) {
+        case "PLAYER":
+            newUser.teams = user.player.teams;
+            newUser.endorsedBy = user.player.endorsedBy;
+            delete newUser.player;
+            break;
+        case "MANAGER":
+            newUser.hiredOn = user.manager.hiredOn;
+            delete newUser.manager;
+            break;
+        case "COACH":
+            newUser.ratings = user.coach.ratings;
+            newUser.yearsExperience = user.coach.yearsExperience;
+            delete newUser.coach;
+            break;
+    }
+
+    return newUser;
+};
+
 module.exports = router;
