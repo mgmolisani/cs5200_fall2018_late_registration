@@ -1,4 +1,5 @@
 const gameModel = require('../models/Game');
+const teamDao = require('../daos/teamDao');
 
 const createGame = game => {
   return gameModel.create(game);
@@ -36,6 +37,23 @@ const addTeamToGame = (gameId, teamId) => {
       },
       {new: true}
   ).exec();
+};
+
+const addTeamToGameByTeamName  = (gameId, teamName) => {
+  return teamDao.getTeamByName(teamName)
+  .then( team => {
+    return gameModel.findByIdAndUpdate(
+        gameId,
+        {
+          $addToSet: {
+            teams: {
+              team: team._id
+            }
+          }
+        },
+        {new: true}
+    ).exec();
+  })
 };
 
 const removeTeamFromGame = (gameId, teamId) => {
@@ -89,5 +107,6 @@ module.exports = {
   addTeamToGame,
   removeTeamFromGame,
   updateTeamScore,
-  endGame
+  endGame,
+  addTeamToGameByTeamName
 };

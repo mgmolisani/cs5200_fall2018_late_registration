@@ -73,6 +73,18 @@ const endorsePlayer = (playerEndorsingId, playerBeingEndorsedId) => {
   ).exec();
 };
 
+const unendorsePlayer = (playerEndorsingId, playerBeingEndorsedId) => {
+  return userModel.findByIdAndUpdate(
+      playerBeingEndorsedId,
+      {
+        $pull: {
+          "player.endorsedBy": playerEndorsingId
+        }
+      },
+      {new: true}
+  ).exec();
+};
+
 module.exports = {
   createUser,
   updateUser,
@@ -83,5 +95,6 @@ module.exports = {
   getTeamsForUser,
   addCoachRating,
   updateYearsExperience,
-  endorsePlayer
+  endorsePlayer,
+  unendorsePlayer
 };

@@ -1,4 +1,5 @@
 const teamModel = require('../models/Team');
+let ObjectId = require('mongodb').ObjectID;
 
 const createTeam = team => {
   return teamModel.create(team);
@@ -88,10 +89,10 @@ const findTeamById = id => {
   return teamModel.findById(id).exec();
 };
 
-// const findAllTeamsForPlayer = (playerId) => {
-//   teamModel.
-//   return userModel.findOne({username: username, password: password}).exec();
-// }
+const findAllTeamsForPlayer = (playerId) => {
+  return teamModel.find({ players : { $all : [ObjectId(playerId)] }}).exec();
+};
+
 module.exports = {
   createTeam,
   updateTeam,
@@ -103,5 +104,6 @@ module.exports = {
   updateCoach,
   getTeamByName,
   addPostToTeam,
-  removePostFromTeam
+  removePostFromTeam,
+  findAllTeamsForPlayer
 };
