@@ -15,7 +15,11 @@ const GameSection = props => {
                                                manager={game.manager}
                                                teams={game.teams}
                                                updateGame={(update) => props.updateGame(game._id, update)}
-                                               deleteGame={() => props.deleteGame(game._id)}/>
+                                               deleteGame={() => props.deleteGame(game._id)}
+                                               addTeamToGameByTeamName={teamName => props.addTeamToGameByTeamName(game._id, teamName)}
+                                               removeTeamFromGame={teamId => props.removeTeamFromGame(game._id, teamId)}
+                                               updateScore={(teamId, score) => props.updateScore(game._id, teamId, score)}
+                                               endGame={() => props.endGame(game._id)}/>
             )}
         </CardSection>
     );

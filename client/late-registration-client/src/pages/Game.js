@@ -3,7 +3,6 @@ import GameSection from '../game/GameSection';
 import Omnibar from '../shared/Omnibar';
 import UserContext from '../contexts/UserContext';
 import {GameService} from '../services/GameService';
-import TeamSection from '../team/TeamSection';
 
 export default class Game
     extends Component {
@@ -22,6 +21,10 @@ export default class Game
         this.createNewGame = this.createNewGame.bind(this);
         this.updateGame = this.updateGame.bind(this);
         this.deleteGame = this.deleteGame.bind(this);
+        this.addTeamToGameByTeamName = this.addTeamToGameByTeamName.bind(this);
+        this.removeTeamFromGame = this.removeTeamFromGame.bind(this);
+        this.updateScore = this.updateScore.bind(this);
+        this.endGame = this.endGame.bind(this);
     }
 
     createNewGame(managerId) {
@@ -38,6 +41,26 @@ export default class Game
 
     deleteGame(gameId) {
         GameService.deleteGame(gameId)
+            .then(() => this.refreshData());
+    }
+
+    addTeamToGameByTeamName(gameId, teamName) {
+        GameService.addTeamToGameByTeamName(gameId, teamName)
+            .then(() => this.refreshData());
+    }
+
+    removeTeamFromGame(gameId, teamId) {
+        GameService.removeTeamFromGame(gameId, teamId)
+            .then(() => this.refreshData());
+    }
+
+    updateScore(gameId, teamId, score) {
+        GameService.updateScore(gameId, teamId, score)
+            .then(() => this.refreshData());
+    }
+
+    endGame(gameId) {
+        GameService.endGame(gameId)
             .then(() => this.refreshData());
     }
 
@@ -77,11 +100,19 @@ export default class Game
                     <GameSection title={'My Games'}
                                  games={this.filterGames(this.state.games.filter(game => game.manager._id === currentUser._id))}
                                  updateGame={this.updateGame}
-                                 deleteGame={this.deleteGame}/>
+                                 deleteGame={this.deleteGame}
+                                 addTeamToGameByTeamName={this.addTeamToGameByTeamName}
+                                 removeTeamFromGame={this.removeTeamFromGame}
+                                 updateScore={this.updateScore}
+                                 endGame={this.endGame}/>
                     <GameSection title={'All Games'}
                                  games={this.filterGames(this.state.games)}
                                  updateGame={this.updateGame}
-                                 deleteGame={this.deleteGame}/>
+                                 deleteGame={this.deleteGame}
+                                 addTeamToGameByTeamName={this.addTeamToGameByTeamName}
+                                 removeTeamFromGame={this.removeTeamFromGame}
+                                 updateScore={this.updateScore}
+                                 endGame={this.endGame}/>
                 </Fragment>}
             </UserContext.Consumer>
         );

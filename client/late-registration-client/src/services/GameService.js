@@ -8,17 +8,6 @@ export const GameService = {
                 return response.json();
             });
     },
-    findUserByCredentials: (credentials) => {
-        return fetch(GAME_API_URL + '/getUserByCredentials', {
-            method: 'POST',
-            body: JSON.stringify(credentials),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function (response) {
-            return response.json();
-        });
-    },
     createGame: game => {
         return fetch(GAME_API_URL + '/createGame', {
             method: 'POST',
@@ -44,6 +33,26 @@ export const GameService = {
             }
         }).then(function (response) {
             return response.json();
+        });
+    },
+    addTeamToGameByTeamName: (gameId, teamName) => {
+        return fetch(GAME_API_URL + '/addTeamToGameByTeamName/' + gameId + '/' + teamName, {
+            method: 'PUT'
+        });
+    },
+    removeTeamFromGame: (gameId, teamId) => {
+        return fetch(GAME_API_URL + '/removeTeamFromGame/' + gameId + '/' + teamId, {
+            method: 'PUT'
+        });
+    },
+    updateScore: (gameId, teamId, score) => {
+        return fetch(GAME_API_URL + '/updateScore/' + gameId + '/' + teamId + '/' + score, {
+            method: 'PUT'
+        });
+    },
+    endGame: (gameId) => {
+        return fetch(GAME_API_URL + '/endGame/' + gameId, {
+            method: 'PUT'
         });
     }
 };

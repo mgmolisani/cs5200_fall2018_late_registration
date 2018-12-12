@@ -23,8 +23,6 @@ export default class GameCard
         this.handleChange = this.handleChange.bind(this);
         this.updateGame = this.updateGame.bind(this);
         this.addTeam = this.addTeam.bind(this);
-        this.removeTeam = this.removeTeam.bind(this);
-        this.updateScore = this.updateScore.bind(this);
     }
 
     handleChange(input, value) {
@@ -44,19 +42,8 @@ export default class GameCard
     }
 
     addTeam() {
-        //TODO check first that its not already there
-        console.log(this.state.team);
+        this.props.addTeamToGameByTeamName(this.state.team);
         this.setState({team: ''});
-    }
-
-    removeTeam(teamId) {
-        //TODO
-        console.log(teamId);
-    }
-
-    updateScore(teamId, score) {
-        //TODO
-        console.log(teamId + ' ' + score);
     }
 
     displayWinner() {
@@ -97,9 +84,9 @@ export default class GameCard
                                                       isEditing={this.state.editMode}/>
                                     <DynamicCardField id={id}
                                                       label={'Game Over?'}
-                                                      checked={this.state.isOver !== null ? this.state.isOver : isOver}
+                                                      checked={this.props.isOver}
                                                       type={'checkbox'}
-                                                      onChange={event => this.handleChange('isOver', event.target.checked)}
+                                                      onChange={this.props.endGame}
                                                       isEditing={this.state.editMode}
                                                       hidden/>
                                     <DynamicCardField id={id}
@@ -133,11 +120,11 @@ export default class GameCard
                                                             )
                                                             && <div className='btn-group-vertical col-auto'>
                                                                 <button className='btn btn-success'
-                                                                        onClick={() => this.updateScore(team.team._id, team.score + 1)}>
+                                                                        onClick={() => this.props.updateScore(team.team._id, team.score + 1)}>
                                                                     +
                                                                 </button>
                                                                 <button className='btn btn-danger'
-                                                                        onClick={() => this.updateScore(team.team._id, team.score - 1)}>
+                                                                        onClick={() => this.props.updateScore(team.team._id, team.score - 1)}>
                                                                     -
                                                                 </button>
                                                             </div>

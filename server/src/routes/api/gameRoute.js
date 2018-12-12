@@ -58,7 +58,7 @@ router.put('/addTeamToGame/:gameId/:teamId', function (req, res, next) {
 
 router.put('/addTeamToGameByTeamName/:gameId/:teamName', function (req, res, next) {
   let gameId = req.params.gameId;
-  let teamName = req.params.teamId;
+  let teamName = req.params.teamName;
   return gameDao.addTeamToGameByTeamName(gameId, teamName)
   .then( result => {
     res.send(result);
