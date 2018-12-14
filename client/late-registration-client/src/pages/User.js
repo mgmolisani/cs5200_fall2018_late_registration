@@ -84,7 +84,6 @@ export default class User
         return UserService.findAllUsers()
             .then(users => {
                 return Promise.all(users.map(user => {
-                    console.log((user.fitbitToken && user.fitbitToken) !== undefined);
                     if ((user.fitbitToken && user.fitbitToken) !== undefined) {
                         return FitbitService.findLifetimeStats(user.fitbitToken, user.fitbitId)
                             .then(stats => {

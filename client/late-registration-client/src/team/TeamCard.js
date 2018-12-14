@@ -25,6 +25,7 @@ export default class TeamCard
         this.updateTeam = this.updateTeam.bind(this);
         this.togglePlayerDetails = this.togglePlayerDetails.bind(this);
         this.togglePosts = this.togglePosts.bind(this);
+        this.addPostToTeam = this.addPostToTeam.bind(this);
     }
 
     handleChange(input, value) {
@@ -50,6 +51,11 @@ export default class TeamCard
 
     togglePosts() {
         this.setState(state => ({showPosts: !state.showPosts}));
+    }
+
+    addPostToTeam(post) {
+        this.props.addPostToTeam(post);
+        this.setState({post: ''});
     }
 
     render() {
@@ -176,7 +182,7 @@ export default class TeamCard
                                                   onChange={event => this.handleChange('post', event.target.value)}/>
                                     </div>
                                     <button className='btn btn-dark btn-block'
-                                            onClick={() => this.props.addPostToTeam({
+                                            onClick={() => this.addPostToTeam({
                                                 content: this.state.post,
                                                 postedBy: currentUser._id
                                             })}>

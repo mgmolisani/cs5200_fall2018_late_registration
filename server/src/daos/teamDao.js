@@ -70,7 +70,7 @@ const removePostFromTeam = (teamId, postId) => {
   return teamModel.findByIdAndUpdate(
       teamId,
       {
-        pull: {
+        $pull: {
           posts: postId
         }
       },

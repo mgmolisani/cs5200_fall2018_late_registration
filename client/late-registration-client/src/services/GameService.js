@@ -1,4 +1,5 @@
 const GAME_API_URL = 'https://late-registration-server.herokuapp.com/game';
+//const GAME_API_URL = 'http://localhost:5000/game';
 
 export const GameService = {
     findAllGames: () => {

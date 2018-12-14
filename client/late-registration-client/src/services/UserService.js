@@ -1,4 +1,5 @@
 const USER_API_URL = 'https://late-registration-server.herokuapp.com/user';
+//const USER_API_URL = 'http://localhost:5000/user';
 
 export const UserService = {
     findAllUsers: () => {

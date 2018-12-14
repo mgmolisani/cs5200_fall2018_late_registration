@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var userDao = require('../../daos/userDao');
 var teamDao = require('../../daos/teamDao');
+var gameDao = require('../../daos/gameDao');
 var postDao = require('../../daos/postDao');
 
 router.get('/', function (req, res, next) {
@@ -137,23 +138,59 @@ router.put('/updateFitbitId/:userId/:fitbitId', function (req, res, next) {
 
 router.delete('/deleteUserById/:id', function (req, res, next) {
     let id = req.params.id;
-    return teamDao.findAllTeamsForPlayer(id)
+    let deletedUser = null;
+    return userDao.deleteUser(id)
+        .then(result => {
+            return userDao.findAllUsers()
+        })
+        .then(users => {
+            return Promise.all(
+                users.map(userId => userDao.unendorsePlayer(id, userId))
+            );
+        })
+        .then(() => {
+            return teamDao.findAllTeamsForPlayer(id);
+        })
         .then(teams => {
-            for (team in teams) {
-                let team_id = team._id;
-                teamDao.removePlayerFromTeam(team_id, id);
-            }
-
+            return Promise.all(
+                teams.map(team => teamDao.removePlayerFromTeam(team._id, id))
+            );
+        })
+        .then(() => {
+            return teamDao.findAllTeams();
+        })
+        .then(teams => {
+            return Promise.all(
+                teams.map(team => team.coach === null ? teamDao.deleteTeam(team._id) : null)
+            );
+        })
+        .then(() => {
+            return gameDao.findAllGames();
+        })
+        .then(games => {
+            return Promise.all(
+                games.map(game => game.manager === null ? gameDao.deleteGame(game._id) : null)
+            );
+        })
+        .then(() => {
+            return teamDao.findAllTeams();
+        })
+        .then(teams => {
+            return Promise.all(
+                teams.map(team => Promise.all(
+                    team.posts.map(post => {
+                        return post.postedBy === null ? teamDao.removePostFromTeam(team.id, post._id) : null
+                    })
+                ))
+            )
+        })
+        .then(() => {
             return postDao.findAllPostsForPlayer(id);
         })
         .then(posts => {
-            for (post in posts) {
-                let post_id = post._id;
-                postDao.deletePost(post_id);
-            }
-        })
-        .then(() => {
-            return userDao.deleteUser(id);
+            return Promise.all(
+                posts.map(post => post.postedBy === id ? postDao.deletePost(post._id) : null)
+            );
         })
         .then(result => {
             res.send(result);

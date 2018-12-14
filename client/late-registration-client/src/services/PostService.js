@@ -1,4 +1,5 @@
 const POST_API_URL = 'https://late-registration-server.herokuapp.com/post';
+//const POST_API_URL = 'http://localhost:5000/post';
 
 export const PostService = {
     createPost: post => {

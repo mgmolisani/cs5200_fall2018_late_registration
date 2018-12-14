@@ -120,7 +120,8 @@ export default class GameCard
                                                                 currentUser._id === manager._id
                                                                 || currentUser.userType === 'ADMIN'
                                                             )
-                                                            && <div className='btn-group-vertical col-auto'>
+                                                            && <Fragment>
+                                                                <div className='btn-group-vertical col-auto'>
                                                                 <button className='btn btn-success'
                                                                         onClick={() => this.props.updateScore(team.team._id, team.score + 1)}>
                                                                     +
@@ -130,6 +131,11 @@ export default class GameCard
                                                                     -
                                                                 </button>
                                                             </div>
+                                                                <button className='btn btn-danger col-auto'
+                                                                        onClick={() => this.props.removeTeamFromGame(team.team._id)}>
+                                                                    X
+                                                                </button>
+                                                            </Fragment>
                                                         }
                                                     </div>
                                                 </div>

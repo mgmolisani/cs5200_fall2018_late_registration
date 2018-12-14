@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import Home from './pages/Home';
-import User from './pages/User';
-import Team from './pages/Team';
 import Game from './pages/Game';
 import NotFound from './pages/NotFound';
 import UserContext from './contexts/UserContext';
 import Header from './shared/Header';
+import Team from './pages/Team';
+import User from './pages/User';
 
 class App
     extends Component {
@@ -37,12 +37,29 @@ class App
                                 <Route path={'/'}
                                        exact
                                        component={Home}/>
-                                <Route path={'/game'}
-                                       component={Game}/>
-                                <Route path={'/team'}
-                                       component={Team}/>
-                                <Route path={'/user'}
-                                       component={User}/>
+                                <Route path={'/game'}>
+                                    {() => !this.state.currentUser
+                                        ? <Redirect to='/'/>
+                                        : <Game/>}
+                                </Route>
+                                <Route path={'/team'}>
+                                    {() => !this.state.currentUser
+                                        ? <Redirect to='/'/>
+                                        : <Team/>}
+                                </Route>
+                                <Route path={'/user'}>
+                                    {() => !this.state.currentUser
+                                        ? <Redirect to='/'/>
+                                        : <User/>}
+                                </Route>
+                                <Route path={'/youtube'}>
+                                    {() => <div>
+                                        <iframe width="100%" height="700"
+                                                src="https://www.youtube.com/embed/3BFnYOk0B6g" frameBorder="0"
+                                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen/>
+                                    </div>}
+                                </Route>
                                 <Route path={'*'}
                                        component={NotFound}/>
                             </Switch>
