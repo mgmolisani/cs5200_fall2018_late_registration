@@ -29,7 +29,6 @@ export default class Game
 
     createNewGame(managerId) {
         GameService.createGame({
-            gameType: 'Football',
             manager: managerId
         }).then(() => this.refreshData());
     }
@@ -89,6 +88,7 @@ export default class Game
     }
 
     render() {
+        console.log(this.state.games);
         return (
             <UserContext.Consumer>
                 {({currentUser}) => <Fragment>
@@ -97,14 +97,14 @@ export default class Game
                              showButton={currentUser.userType === 'MANAGER'}
                              onClick={() => this.createNewGame(currentUser._id)}
                              buttonLabel={'Create New Game'}/>
-                    <GameSection title={'My Games'}
+                    {currentUser.userType === 'MANAGER' && <GameSection title={'My Games'}
                                  games={this.filterGames(this.state.games.filter(game => game.manager._id === currentUser._id))}
                                  updateGame={this.updateGame}
                                  deleteGame={this.deleteGame}
                                  addTeamToGameByTeamName={this.addTeamToGameByTeamName}
                                  removeTeamFromGame={this.removeTeamFromGame}
                                  updateScore={this.updateScore}
-                                 endGame={this.endGame}/>
+                                 endGame={this.endGame}/>}
                     <GameSection title={'All Games'}
                                  games={this.filterGames(this.state.games)}
                                  updateGame={this.updateGame}

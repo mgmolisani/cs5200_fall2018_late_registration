@@ -16,6 +16,8 @@ export default class Home
         this.state = {
             username: '',
             password: '',
+            firstName: '',
+            lastName: '',
             userType: 'PLAYER'
         };
         this.updateField = this.updateField.bind(this);
@@ -69,6 +71,18 @@ export default class Home
                                       defaultValue={this.state.password}
                                       onChange={event => this.updateField('password', event.target.value)}
                                       isEditing={true}/>
+                    <DynamicCardField id={'first'}
+                                      label={'First Name'}
+                                      value={this.state.firstName}
+                                      defaultValue={this.state.firstName}
+                                      onChange={event => this.updateField('firstName', event.target.value)}
+                                      isEditing={true}/>
+                    <DynamicCardField id={'last'}
+                                      label={'Last Name'}
+                                      value={this.state.lastName}
+                                      defaultValue={this.state.lastName}
+                                      onChange={event => this.updateField('lastName', event.target.value)}
+                                      isEditing={true}/>
                     <div className='form-group'>
                         <label htmlFor={'_User Type'}>
                             User Type
@@ -91,7 +105,7 @@ export default class Home
                             </option>
                         </select>
                     </div>
-                    <button className='btn btn-block btn-dark'
+                    <button className='btn btn-block btn-dark mb-3'
                             onClick={() => UserService.createUser(this.state)
                                 .then(user => setCurrentUser(user))}>
                         Login New User

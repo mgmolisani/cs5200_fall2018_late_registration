@@ -3,7 +3,10 @@ const UserModel = require('../models/User');
 const PostModel = require('../models/Post');
 
 module.exports = new Schema({
-    name: String,
+    name: {
+        type: String,
+        default: 'New Team'
+    },
     logo: String,
     mascot: String,
     hometown: String,

@@ -7,8 +7,14 @@ module.exports = new Schema({
         type: Date,
         default: new Date()
     },
-    location: String,
-    gameType: String,
+    location: {
+        type: String,
+        default: 'Location 1'
+    },
+    gameType: {
+        type: String,
+        default: 'Game Type 1'
+    },
     teams: [
         {
             _id: false,

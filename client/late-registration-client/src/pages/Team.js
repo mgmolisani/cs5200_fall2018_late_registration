@@ -41,7 +41,6 @@ export default class Team
 
     createNewTeam(coachId) {
         TeamService.createTeam({
-            name: 'new team',
             coach: coachId
         }).then(() => this.refreshData());
     }
@@ -103,14 +102,22 @@ export default class Team
                              showButton={currentUser.userType === 'COACH'}
                              onClick={() => this.createNewTeam(currentUser._id)}
                              buttonLabel={'Create New Team'}/>
-                    <TeamSection title={'My Teams'}
+                    {currentUser.userType === 'COACH' && <TeamSection title={'My Teams'}
                                  teams={this.filterTeams(this.state.teams.filter(team => team.coach._id === currentUser._id))}
                                  updateTeam={this.updateTeam}
                                  deleteTeam={this.deleteTeam}
                                  addPlayerToTeam={this.addPlayerToTeam}
                                  removePlayerFromTeam={this.removePlayerFromTeam}
                                  addPostToTeam={this.addPostToTeam}
-                                 removePostFromTeam={this.removePostFromTeam}/>
+                                 removePostFromTeam={this.removePostFromTeam}/>}
+                    {currentUser.userType === 'PLAYER' && <TeamSection title={'My Teams'}
+                                                                      teams={this.filterTeams(this.state.teams.filter(team => team.players.some(player => player._id === currentUser._id)))}
+                                                                      updateTeam={this.updateTeam}
+                                                                      deleteTeam={this.deleteTeam}
+                                                                      addPlayerToTeam={this.addPlayerToTeam}
+                                                                      removePlayerFromTeam={this.removePlayerFromTeam}
+                                                                      addPostToTeam={this.addPostToTeam}
+                                                                      removePostFromTeam={this.removePostFromTeam}/>}
                     <TeamSection title={'All Teams'}
                                  teams={this.filterTeams(this.state.teams)}
                                  updateTeam={this.updateTeam}

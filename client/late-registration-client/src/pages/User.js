@@ -125,6 +125,18 @@ export default class User
                                  deleteUser={this.deleteUser}
                                  rateCoach={this.rateCoach}
                                  toggleEndorsement={this.toggleEndorsement}/>
+                    {currentUser.userType === 'PLAYER' && <UserSection title={'Endorse Me'}
+                                 users={this.searchUsers(users.filter(user => currentUser.endorsedBy.some(id => id === user._id)))}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>}
+                    {currentUser.userType === 'PLAYER' && <UserSection title={'My Endorsements'}
+                                 users={this.searchUsers(users.filter(user => user.userType === 'PLAYER' && user.endorsedBy.some(id => id === currentUser._id)))}
+                                 updateUser={this.updateUser}
+                                 deleteUser={this.deleteUser}
+                                 rateCoach={this.rateCoach}
+                                 toggleEndorsement={this.toggleEndorsement}/>}
                     <UserSection title={'Players'}
                                  users={this.searchUsers(users.filter(user => user.userType === 'PLAYER'))}
                                  updateUser={this.updateUser}

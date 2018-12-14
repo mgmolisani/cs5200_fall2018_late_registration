@@ -4,61 +4,63 @@ var teamDao = require('../../daos/teamDao');
 var postDao = require('../../daos/postDao');
 
 router.get('/', function (req, res, next) {
-  res.send('Welcome to the user router.')
+    res.send('Welcome to the user router.');
 });
 
 router.get('/getAllUsers', function (req, res, next) {
-  return userDao.findAllUsers()
-  .then(function(result) {
-    const new_arr = result.map(user => flattenUser(user));
-    res.send(new_arr);
-    return new_arr
-  })
-  .catch(next);
+    return userDao.findAllUsers()
+        .then(function (result) {
+            const new_arr = result.map(user => flattenUser(user));
+            res.send(new_arr);
+            return new_arr;
+        })
+        .catch(next);
 });
 
 router.get('/getUserById/:id', function (req, res, next) {
-  return userDao.findUserById(req.params.id)
-  .then(result => {
-    let flatUser = flattenUser(result);
-    res.send(flatUser)
-    return flatUser;
-  })
-  .catch(next);
+    return userDao.findUserById(req.params.id)
+        .then(result => {
+            let flatUser = flattenUser(result);
+            res.send(flatUser);
+            return flatUser;
+        })
+        .catch(next);
 });
 
 router.post('/createUser', function (req, res, next) {
-  let user = req.body;
-  return userDao.createUser(user)
-  .then(result => {
-    res.send(result);
-    return result;
-  })
-  .catch(next);
+    let user = req.body;
+    return userDao.createUser(user)
+        .then(result => {
+            let flatUser = flattenUser(result);
+            res.send(flatUser);
+            return flatUser;
+        })
+        .catch(next);
 });
 
 router.post('/getUserByCredentials', function (req, res, next) {
-  let username = req.body.username;
-  let password = req.body.password;
+    let username = req.body.username;
+    let password = req.body.password;
 
-  return userDao.findUserByCredentials(username, password)
-  .then(result => {
-    res.send(result);
-    return result;
-  })
-  .catch(next);
+    return userDao.findUserByCredentials(username, password)
+        .then(result => {
+            let flatUser = flattenUser(result);
+            res.send(flatUser);
+            return flatUser;
+        })
+        .catch(next);
 });
 
 router.put('/updateUser/:id', function (req, res, next) {
-  let id = req.params.id;
-  let user = req.body;
-  return userDao.updateUser(id, unflattenUser(user))
-  .then(result => {
-    res.send(result);
-    return result;
+    let id = req.params.id;
+    let user = req.body;
+    return userDao.updateUser(id, unflattenUser(user))
+        .then(result => {
+            res.send(result);
+            return result;
 
-  })
-  .catch(next);
+        })
+        .catch(next);
 });
 
 router.put('/endorsePlayer/:playerEndorsingId/:playerBeingEndorsedId', function (req, res, next) {
@@ -85,106 +87,105 @@ router.put('/unendorsePlayer/:playerEndorsingId/:playerBeingEndorsedId', functio
         .catch(next);
 });
 
-
 router.put('/addCoachRating/:coachId/:rating', function (req, res, next) {
-  let coachId = req.params.coachId;
-  let rating = req.params.rating;
-  return userDao.addCoachRating(coachId, rating)
-  .then(result => {
-    res.send(result);
-    return result;
+    let coachId = req.params.coachId;
+    let rating = req.params.rating;
+    return userDao.addCoachRating(coachId, rating)
+        .then(result => {
+            res.send(result);
+            return result;
 
-  })
-  .catch(next);
+        })
+        .catch(next);
 });
 
 router.put('/updateYearsExperience/:coachId/:yearsExperience', function (req, res, next) {
-  let coachId = req.params.coachId;
-  let yearsExperience = req.params.yearsExperience;
-  return userDao.updateYearsExperience(coachId, yearsExperience)
-  .then(result => {
-    res.send(result);
-    return result;
+    let coachId = req.params.coachId;
+    let yearsExperience = req.params.yearsExperience;
+    return userDao.updateYearsExperience(coachId, yearsExperience)
+        .then(result => {
+            res.send(result);
+            return result;
 
-  })
-  .catch(next);
+        })
+        .catch(next);
 });
 
-
 router.put('/updateFitbitToken/:userId/:fitbitToken', function (req, res, next) {
-  let fitbitToken = req.params.fitbitToken;
-  let userId = req.params.userId;
-  return userDao.updateFitbitToken(userId, fitbitToken)
-  .then(result => {
-    res.send(result);
-    return result;
+    let fitbitToken = req.params.fitbitToken;
+    let userId = req.params.userId;
+    return userDao.updateFitbitToken(userId, fitbitToken)
+        .then(result => {
+            res.send(result);
+            return result;
 
-  })
-  .catch(next);
+        })
+        .catch(next);
 });
 
 router.put('/updateFitbitId/:userId/:fitbitId', function (req, res, next) {
-  let fitbitId = req.params.fitbitId;
-  let userId = req.params.userId;
-  return userDao.updateFitbitId(userId, fitbitId)
-  .then(result => {
-    res.send(result);
-    return result;
+    let fitbitId = req.params.fitbitId;
+    let userId = req.params.userId;
+    return userDao.updateFitbitId(userId, fitbitId)
+        .then(result => {
+            res.send(result);
+            return result;
 
-  })
-  .catch(next);
+        })
+        .catch(next);
 });
 
 router.delete('/deleteUserById/:id', function (req, res, next) {
-  let id = req.params.id;
-  return teamDao.findAllTeamsForPlayer(id)
-  .then( teams => {
-    for (team in teams) {
-      let team_id = team._id;
-      teamDao.removePlayerFromTeam(team_id, id)
-    }
+    let id = req.params.id;
+    return teamDao.findAllTeamsForPlayer(id)
+        .then(teams => {
+            for (team in teams) {
+                let team_id = team._id;
+                teamDao.removePlayerFromTeam(team_id, id);
+            }
 
-    return postDao.findAllPostsForPlayer(id)
-  })
-  .then( posts => {
-    for (post in posts) {
-      let post_id = post._id;
-      postDao.deletePost(post_id);
-    }
-  })
-  .then( () => {
-    return userDao.deleteUser(id)
-  })
-  .then( result => {
-    res.send(result);
-    return result;
-  })
-  .catch(next);
+            return postDao.findAllPostsForPlayer(id);
+        })
+        .then(posts => {
+            for (post in posts) {
+                let post_id = post._id;
+                postDao.deletePost(post_id);
+            }
+        })
+        .then(() => {
+            return userDao.deleteUser(id);
+        })
+        .then(result => {
+            res.send(result);
+            return result;
+        })
+        .catch(next);
 });
 
 const unflattenUser = (user) => {
 
-  let newUser = {
-    username: user.username,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    coach: {
-      yearsExperience: user.yearsExperience
-    },
-    manager: {
-      hiredOn: user.hiredOn
-    }
-  };
+    let newUser = {
+        ...user,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        coach: {
+            yearsExperience: user.yearsExperience
+        },
+        manager: {
+            hiredOn: user.hiredOn
+        }
+    };
 
-  return newUser;
+    return newUser;
 };
 
 const flattenUser = (user) => {
 
     let newUser = JSON.parse(JSON.stringify(user));
 
-    if (user === null ) {
-      return;
+    if (user === null) {
+        return;
     }
 
     switch (user.userType) {

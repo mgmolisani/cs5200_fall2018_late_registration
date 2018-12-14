@@ -32,12 +32,9 @@ export default class UserCard
         this.setState({[input]: value});
     }
 
-    componentDidMount() {
-        FitbitService.findLifetimeStats('eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkQ1SEIiLCJzdWIiOiI2WjRENkYiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyYWN0IiwiZXhwIjoxNTQ3MjIyMDQ1LCJpYXQiOjE1NDQ2MzAwNTZ9.JHSPad19vcssMLVSM8C2tr0Prmu3tPLf2DWC9gkT1sQ', '6Z4D6F');
-    }
-
     updateUser() {
         if (this.state.editMode) {
+            console.log(this.state.userType);
             const user = {
                 ...this.props.user,
                 username: this.state.username || this.props.username,

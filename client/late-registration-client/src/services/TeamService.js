@@ -1,4 +1,4 @@
-const TEAM_API_URL = (process.env.HOST ? 'https://late-registration-server.herokuapp.com' : 'http://localhost:5000') + '/team';
+const TEAM_API_URL = 'https://late-registration-server.herokuapp.com/team';
 
 export const TeamService = {
     findAllTeams: () => {
